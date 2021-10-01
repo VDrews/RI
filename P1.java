@@ -8,8 +8,12 @@ import org.apache.tika.Tika;
 import org.apache.tika.metadata.Metadata;
 import java.io.InputStream;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class P1 {
   // Exporta un HashMap a CSV
@@ -17,6 +21,7 @@ public class P1 {
     String eol = System.getProperty("line.separator");
 
     try (Writer writer = new FileWriter(pathname + ".csv")) {
+      writer.append("Text;Size").append(eol);
       for (Map.Entry<String, Integer> entry : hashmap.entrySet()) {
         writer.append(entry.getKey()).append(',').append(Integer.toString(entry.getValue())).append(eol);
       }
@@ -46,11 +51,20 @@ public class P1 {
       // tipo, codificacion e idioma.
     } else if (args[0].equals("-l")) {
       for (String pathname : pathnames) {
-        System.out.println(pathname);
-      }
-      File f = new File(args[1]);
+        File f = new File(pathname);
 
-      InputStream is = new FileInputStream(f);
+        List<String> urls = new ArrayList<String>();
+        String text = tika.parseToString(f);
+        Matcher m = Pattern.compile(
+            "(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})")
+            .matcher(text);
+        while (m.find()) {
+          urls.add(m.group());
+        }
+        for (String url : urls) {
+          System.out.println(url);
+        }
+      }
 
       // Recuperar todos los enlaces
     } else if (args[0].equals("-t")) {
@@ -61,9 +75,11 @@ public class P1 {
         String[] parts = text.split(" ");
         Map<String, Integer> map = new HashMap<String, Integer>();
         for (String w : parts) {
-          Integer n = map.get(w);
+          final String word = w.toLowerCase();
+          Integer n = map.get(word);
           n = (n == null) ? 1 : ++n;
-          map.put(w, n);
+          if (Pattern.matches("\\w{3,}", word))
+            map.put(word, n);
         }
         csvWriter(map, pathname);
       }
