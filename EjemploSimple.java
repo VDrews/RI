@@ -1,4 +1,4 @@
-import java.io.File;
+/*import java.io.File;
 import org.apache.tika.Tika;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.language.LanguageIdentifier;
@@ -24,3 +24,4 @@ public class EjemploSimple {
     }
   }
 }
+*/

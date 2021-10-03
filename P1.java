@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import org.apache.tika.Tika;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.sax.BodyContentHandler;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -54,9 +57,13 @@ public class P1 {
           File f = new File(pathname); //abrimos archivo
           InputStream is = new FileInputStream(f); //creamos el inputstream
           Metadata metadata = new Metadata(); 
-          tika.parseToString(is); //parseamos el texto
-          tika.parse(is,metadata);
-          writer.append(metadata.get(Metadata.RESOURCE_NAME_KEY)).append(";").append(metadata.get(Metadata.CONTENT_TYPE)).append(";").append(metadata.get(Metadata.CONTENT_ENCODING)).append(metadata.get(Metadata.CONTENT_LANGUAGE));
+          AutoDetectParser parser = new AutoDetectParser();
+          BodyContentHandler handler = new BodyContentHandler( );
+          ParseContext context = new ParseContext();
+          parser.parse(is, handler, metadata, context);        
+          writer.append(metadata.get(Metadata.RESOURCE_NAME_KEY)).append(metadata.get(Metadata.CONTENT_TYPE)).
+          append(";").append(metadata.get(Metadata.CONTENT_ENCODING)).append(";").append(metadata.get(Metadata.CONTENT_LANGUAGE)).append(";").append(eol); //CAMBIAR;
+          
         }
     }catch(IOException ex){
       ex.printStackTrace(System.err);
