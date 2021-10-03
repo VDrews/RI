@@ -37,19 +37,30 @@ public class P1 {
   public static void main(String[] args) throws Exception {
     Tika tika = new Tika();
     String[] pathnames;
-
     File f_pathnames = new File(args[1]);
-
     pathnames = f_pathnames.list();
-
     System.out.println(args[0]);
 
     if (args[0].equals("-d")) {
       // Te dejo esto para que puedas recorrer el directorio,
       // son las rutas, tienes que crear un file para cada uno
-      for (String pathname : pathnames) {
-        System.out.println(pathname);
-      }
+      String eol = System.getProperty("line.separator");
+      try{
+        Writer writer = new FileWriter("metadata_table.csv");
+        writer.append("Name;Type;Encoding;Language").append(eol);
+
+        for (String pathname : pathnames) {
+          System.out.println("Procesando: "+pathname);
+          File f = new File(pathname); //abrimos archivo
+          InputStream is = new FileInputStream(f); //creamos el inputstream
+          Metadata metadata = new Metadata(); 
+          tika.parseToString(is); //parseamos el texto
+          tika.parse(is,metadata);
+          writer.append(metadata.get(Metadata.RESOURCE_NAME_KEY)).append(";").append(metadata.get(Metadata.CONTENT_TYPE)).append(";").append(metadata.get(Metadata.CONTENT_ENCODING)).append(metadata.get(Metadata.CONTENT_LANGUAGE));
+        }
+    }catch(IOException ex){
+      ex.printStackTrace(System.err);
+    }
 
       // Realizar de fotma automatica una tabla que contenga el nombre del fichero,
       // tipo, codificacion e idioma.
