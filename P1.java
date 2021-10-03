@@ -61,7 +61,7 @@ public class P1 {
           BodyContentHandler handler = new BodyContentHandler( );
           ParseContext context = new ParseContext();
           parser.parse(is, handler, metadata, context);        
-          writer.append(metadata.get(Metadata.RESOURCE_NAME_KEY)).append(metadata.get(Metadata.CONTENT_TYPE)).
+          writer.append(metadata.get(Metadata.RESOURCE_NAME_KEY)).append(";").append(metadata.get(Metadata.CONTENT_TYPE)).
           append(";").append(metadata.get(Metadata.CONTENT_ENCODING)).append(";").append(metadata.get(Metadata.CONTENT_LANGUAGE)).append(";").append(eol); //CAMBIAR;
           
         }
