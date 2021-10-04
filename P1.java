@@ -65,7 +65,7 @@ public class P1 {
       writer.append("Name;Type;Encoding;Language").append(eol);
 
       for (File f : files) {
-        System.out.println("Procesando: " + f.getName());
+        //System.out.println("Procesando: " + f.getName());
         InputStream is = new FileInputStream(f); // creamos el inputstream
         Metadata metadata = new Metadata();
         AutoDetectParser parser = new AutoDetectParser();
