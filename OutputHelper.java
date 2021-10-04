@@ -32,7 +32,7 @@ public class OutputHelper {
       writer.append("Name;Type;Encoding;Language").append(eol);
       for (Metadata metadata_object : metadatos) {
         writer.append(metadata_object.get("resourceName")).append(";").append(metadata_object.get("Content-Type")).append(";").
-        append(metadata_object.get("Content-Encoding")).append(metadata_object.get("Content-Encoding")).append(eol);//todo
+        append(metadata_object.get("Content-Encoding")).append(";").append(metadata_object.get("Content-Language")).append(eol);//todo
       }
     } catch (IOException ex) {
       ex.printStackTrace(System.err);
