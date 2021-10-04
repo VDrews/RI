@@ -1,29 +1,15 @@
-import org.apache.tika.sax.TeeContentHandler;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.apache.tika.Tika;
-import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.sax.BodyContentHandler;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import java.io.InputStream;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.tika.Tika;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.metadata.Metadata;
 
 public class P1 {
   public static void main(String[] args) throws Exception {
@@ -64,10 +50,7 @@ public class P1 {
       writer.append("Name;Type;Encoding;Language").append(eol);
 
       for (File f : files) {
-<<<<<<< HEAD
-=======
-        //System.out.println("Procesando: " + f.getName());
->>>>>>> c47e7ffc2804ac693788daae56c81dee9f258cfe
+        // System.out.println("Procesando: " + f.getName());
         InputStream is = new FileInputStream(f); // creamos el inputstream
         Metadata metadata = new Metadata();
         AutoDetectParser parser = new AutoDetectParser();
