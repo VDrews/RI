@@ -10,6 +10,9 @@ import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import java.io.InputStream;
 import java.io.Writer;
+import java.util.List;
+import java.util.ArrayList;
+
 
 public class P1 {
   public static void main(String[] args) throws Exception {
@@ -42,33 +45,20 @@ public class P1 {
   }
 
   public static void generarTabla(File[] files) throws Exception {
+    // Realizar de fotma automatica una tabla que contenga el nombre del fichero,
+    // tipo, codificacion e idioma.
     // Te dejo esto para que puedas recorrer el directorio,
     // son las rutas, tienes que crear un file para cada uno
     String eol = System.getProperty("line.separator");
-    try {
-      Writer writer = new FileWriter("metadata_table.csv");
-      writer.append("Name;Type;Encoding;Language").append(eol);
+    ArrayList<Metadata> metadata_list = new ArrayList<Metadata>();
 
       for (File f : files) {
-        // System.out.println("Procesando: " + f.getName());
-        InputStream is = new FileInputStream(f); // creamos el inputstream
-        Metadata metadata = new Metadata();
-        AutoDetectParser parser = new AutoDetectParser();
-        BodyContentHandler handler = new BodyContentHandler();
-        ParseContext context = new ParseContext();
-        parser.parse(is, handler, metadata, context);
-        writer.append(metadata.get(Metadata.RESOURCE_NAME_KEY)).append(";").append(metadata.get(Metadata.CONTENT_TYPE))
-            .append(";").append(metadata.get(Metadata.CONTENT_ENCODING)).append(";")
-            .append(metadata.get(Metadata.CONTENT_LANGUAGE)).append(";").append(eol); // CAMBIAR;
-
+        System.out.println("Procesando: " + f.getName());
+        DocumentAnalyzer document = new DocumentAnalyzer(f);
+        metadata_list.add(document.getMetadata());
       }
-      writer.close();
-    } catch (IOException ex) {
-      ex.printStackTrace(System.err);
-    }
-
-    // Realizar de fotma automatica una tabla que contenga el nombre del fichero,
-    // tipo, codificacion e idioma.
+      System.out.println("Generando tabla de metadatos...");
+      OutputHelper.csvWriterMetadata(metadata_list,"metadataTable");
   }
 
   public static void generarEnlaces(File[] files) throws Exception {

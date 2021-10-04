@@ -29,15 +29,18 @@ public class DocumentAnalyzer {
   private File file;
   private String nombre;
   private String contenido;
-  private String[] metadata;
+  private Metadata metadata; // cambio el atributo de tipo a Metadata, para facilitar el acceso a los valores.
   private List<Link> enlaces;
 
   String getNombre() {
     return nombre;
   }
-
+  
   List<Link> getEnlaces() {
     return enlaces;
+  }
+  Metadata getMetadata(){
+    return metadata;
   }
 
   DocumentAnalyzer(File file) throws Exception {
@@ -45,7 +48,7 @@ public class DocumentAnalyzer {
     this.nombre = file.getName();
     FileInputStream inputStream = new FileInputStream(file); // creamos el inputstream
     BodyContentHandler contentHandler = new BodyContentHandler(-1);
-    Metadata metadata = new Metadata();
+    this.metadata = new Metadata();
     ParseContext parser = new ParseContext();
     LinkContentHandler linkContentHandler = new LinkContentHandler();
     TeeContentHandler teeContentHandler = new TeeContentHandler(linkContentHandler, contentHandler);
@@ -54,7 +57,6 @@ public class DocumentAnalyzer {
     autodetectParser.parse(inputStream, teeContentHandler, metadata, parser);
 
     this.contenido = contentHandler.toString();
-    this.metadata = metadata.names();
 
     this.enlaces = linkContentHandler.getLinks();
   }
