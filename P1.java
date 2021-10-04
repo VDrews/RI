@@ -40,7 +40,6 @@ public class P1 {
         return pathname.isFile();
       }
     });
-    System.out.println(args[0]);
 
     if (args[0].equals("-d")) {
       generarTabla(files);
@@ -65,7 +64,6 @@ public class P1 {
       writer.append("Name;Type;Encoding;Language").append(eol);
 
       for (File f : files) {
-        System.out.println("Procesando: " + f.getName());
         InputStream is = new FileInputStream(f); // creamos el inputstream
         Metadata metadata = new Metadata();
         AutoDetectParser parser = new AutoDetectParser();
@@ -88,16 +86,15 @@ public class P1 {
 
   public static void generarEnlaces(File[] files) throws Exception {
     for (File file : files) {
-      System.out.println(file.getName());
       DocumentAnalyzer document = new DocumentAnalyzer(file);
-      OutputHelper.print(document.listaEnlaces());
+      OutputHelper.print(document.getEnlaces(), document.getNombre());
     }
   }
 
   public static void generarContador(File[] files) throws Exception {
     for (File file : files) {
       DocumentAnalyzer document = new DocumentAnalyzer(file);
-      OutputHelper.csvWriter(document.contador(), file.getName());
+      OutputHelper.csvWriter(document.contador(), document.getNombre());
 
     }
   }
