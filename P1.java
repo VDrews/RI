@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.sax.BodyContentHandler;
+
+
+
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import java.io.InputStream;
@@ -18,7 +21,7 @@ public class P1 {
   public static void main(String[] args) throws Exception {
 
     if (args.length != 2) {
-      throw new IllegalArgumentException("Número de argumentos incorrectos. Argumentos: -d ; -l ; -t");
+      throw new IllegalArgumentException("Número de argumentos incorrectos. Argumentos: -d ; -l ; -t  args.size= " + args.length);
     }
 
     File[] files;
