@@ -23,6 +23,13 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.apache.tika.sax.Link;
 import org.apache.tika.sax.LinkContentHandler;
 import org.apache.tika.sax.TeeContentHandler;
+import org.apache.tika.language.LanguageIdentifier;
+import org.apache.tika.language.detect.LanguageResult;
+import org.apache.tika.langdetect.OptimaizeLangDetector;
+import org.apache.tika.language.detect.LanguageDetector;
+
+
+
 
 public class DocumentAnalyzer {
   private static Tika tika = new Tika();
@@ -31,9 +38,13 @@ public class DocumentAnalyzer {
   private String contenido;
   private Metadata metadata; // cambio el atributo de tipo a Metadata, para facilitar el acceso a los valores.
   private List<Link> enlaces;
+  private LanguageResult language;
 
   String getNombre() {
     return nombre;
+  }
+  LanguageResult getLanguageResult(){
+    return language;
   }
   
   List<Link> getEnlaces() {
@@ -55,9 +66,9 @@ public class DocumentAnalyzer {
     AutoDetectParser autodetectParser = new AutoDetectParser();
 
     autodetectParser.parse(inputStream, teeContentHandler, metadata, parser);
-
+    LanguageDetector identifier = new OptimaizeLangDetector().loadModels();
     this.contenido = contentHandler.toString();
-
+    this.language = identifier.detect(this.contenido);
     this.enlaces = linkContentHandler.getLinks();
   }
 

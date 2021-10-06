@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import org.apache.tika.sax.Link;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.apache.tika.language.detect.LanguageResult;
 import org.apache.tika.metadata.Metadata;
 
 
@@ -25,14 +27,15 @@ public class OutputHelper {
   }
 
   //Exporta a tabla con titulo, tipo, codificacion y lenguaje.
-  public static void csvWriterMetadata(ArrayList<Metadata> metadatos, String pathname) throws IOException {
+  public static void csvWriterMetadata(ArrayList<String> file_names, ArrayList<String> languages, ArrayList<Metadata> metadatos, String pathname) throws IOException {
     String eol = System.getProperty("line.separator");
-
+    int contador = 0;
     try (Writer writer = new FileWriter(pathname + ".csv")) {
       writer.append("Name;Type;Encoding;Language").append(eol);
       for (Metadata metadata_object : metadatos) {
-        writer.append(metadata_object.get("resourceName")).append(";").append(metadata_object.get("Content-Type")).append(";").
-        append(metadata_object.get("Content-Encoding")).append(";").append(metadata_object.get("Content-Language")).append(eol);//todo
+        writer.append(file_names.get(contador)).append(";").append(metadata_object.get(Metadata.CONTENT_TYPE)).append(";").
+        append(metadata_object.get(Metadata.CONTENT_ENCODING)).append(";").append((languages.get(contador))).append(eol);
+        contador+=1;
       }
     } catch (IOException ex) {
       ex.printStackTrace(System.err);

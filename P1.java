@@ -8,7 +8,7 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.sax.BodyContentHandler;
 
 
-
+import org.apache.tika.language.detect.LanguageResult;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import java.io.InputStream;
@@ -54,14 +54,18 @@ public class P1 {
     // son las rutas, tienes que crear un file para cada uno
     String eol = System.getProperty("line.separator");
     ArrayList<Metadata> metadata_list = new ArrayList<Metadata>();
+    ArrayList<String> file_names = new ArrayList<String>();
+    ArrayList<String> languages = new ArrayList<String>();
 
       for (File f : files) {
         System.out.println("Procesando: " + f.getName());
         DocumentAnalyzer document = new DocumentAnalyzer(f);
         metadata_list.add(document.getMetadata());
+        file_names.add(f.getName());
+        languages.add(document.getLanguageResult().getLanguage());
       }
       System.out.println("Generando tabla de metadatos...");
-      OutputHelper.csvWriterMetadata(metadata_list,"metadataTable");
+      OutputHelper.csvWriterMetadata(file_names,languages,metadata_list,"metadataTable");
   }
 
   public static void generarEnlaces(File[] files) throws Exception {
