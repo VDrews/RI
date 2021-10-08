@@ -1,4 +1,4 @@
-# Memoría Recuperación de Información
+# Memoría Rexcuperación de Información
 
 ## ¿Qué ha hecho cada miembro?
 
