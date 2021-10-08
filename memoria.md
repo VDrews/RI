@@ -1,6 +1,9 @@
 # ¿Qué ha hecho cada miembro?
 
 ## Adrián
+* Apartado (-d)
+* Clase DocumentAnalyzer.java
+* Método csvWriterMetadata de OutputHelper
 
 ## Andrés
 * Clase DocumentAnalyser.java
