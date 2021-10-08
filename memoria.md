@@ -1,9 +1,14 @@
-# ¿Qué ha hecho cada miembro?
+# Memoría Recuperación de Información
 
-## Adrián
+## ¿Qué ha hecho cada miembro?
 
-## Andrés
+### Adrián
+
+### Andrés
 * Clase DocumentAnalyser.java
 * Métodos csvWriter y print de OutputHelper
 * Apartado (-l)
 * Apartado (-t)
+
+## Cómo lo hemos hecho
+
