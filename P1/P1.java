@@ -48,13 +48,11 @@ public class P1 {
     ArrayList<String> languages = new ArrayList<String>();
 
     for (File f : files) {
-      System.out.println("Procesando: " + f.getName());
       DocumentAnalyzer document = new DocumentAnalyzer(f);
       metadata_list.add(document.getMetadata());
       file_names.add(f.getName());
       languages.add(document.getLanguageResult().getLanguage());
     }
-    System.out.println("Generando tabla de metadatos...");
     OutputHelper.csvWriterMetadata(file_names, languages, metadata_list, "metadataTable");
   }
 
