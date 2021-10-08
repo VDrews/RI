@@ -26,8 +26,8 @@ public class OutputHelper {
   }
 
   // Exporta a tabla con titulo, tipo, codificacion y lenguaje.
-  public static void csvWriterMetadata(ArrayList<String> file_names, ArrayList<String> languages,
-      ArrayList<Metadata> metadatos, String pathname) throws IOException {
+  public static void csvWriterMetadata(List<String> file_names, List<String> languages,
+      List<Metadata> metadatos, String pathname) throws IOException {
     String eol = System.getProperty("line.separator");
     int contador = 0;
     try (Writer writer = new FileWriter(pathname + ".csv")) {
