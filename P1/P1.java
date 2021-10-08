@@ -2,6 +2,7 @@ package P1;
 
 import java.io.File;
 import java.io.FileFilter;
+import org.apache.tika.sax.Link;
 
 import org.apache.tika.metadata.Metadata;
 
@@ -57,9 +58,14 @@ public class P1 {
   }
 
   public static void generarEnlaces(File[] files) throws Exception {
+   
+    ArrayList<Link> links_list = new ArrayList<Link>();
     for (File file : files) {
       DocumentAnalyzer document = new DocumentAnalyzer(file);
-      OutputHelper.print(document.getEnlaces(), document.getNombre());
+      for (Link link : document.getEnlaces()){
+        links_list.add(link);
+      }
+      OutputHelper.print(links_list,"links");
     }
   }
 

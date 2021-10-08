@@ -1,4 +1,4 @@
-package P2;
+/*package P2;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -34,3 +34,4 @@ public class P2 {
     }
   }
 }
+*/

@@ -43,10 +43,8 @@ public class OutputHelper {
   }
 
   public static void print(List<Link> links, String pathname) {
-    System.out.println(pathname.toUpperCase());
     String eol = System.getProperty("line.separator");
-    try{
-      Writer writer = new FileWriter(pathname+".csv");
+    try(Writer writer = new FileWriter(pathname+".csv")) {
       writer.append("Links").append(eol);
       for (Link link : links) {
         writer.append(link.getUri()).append(eol);

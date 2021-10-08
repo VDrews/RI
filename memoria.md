@@ -23,7 +23,8 @@ La finalidad de este método es generar un archivo ".csv" con los metadatos de l
 Para conseguirlo se hace uso de la clase FileWriter y su metodo append para primero añadir los titulos de la tabla y dentro de un bucle for añadir los diferentes valores de los metadatos accediento a los diferentes parámetros del método.
 ### Método print
 
-##
+## Resultados 
+Los resultados de la práctica se componen 
 ## ¿Qué ha hecho cada miembro?
 
 ### Adrián
