@@ -2,10 +2,16 @@ package P2;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.analysis.core.*;
+import org.apache.lucene.analysis.es.SpanishAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.tokenattributes.*;
 
 public class P2 {
   public static void main(String[] args) throws Exception {
@@ -18,19 +24,39 @@ public class P2 {
         return pathname.isFile();
       }
     });
-
+    System.out.println(files.length);
     // 1. Comparar Analizadores
     for (File f : files) {
-      WhitespaceAnalyzer an = new WhitespaceAnalyzer();
-      DocumentAnalyzer document = new DocumentAnalyzer(f);
-      TokenStream stream = an.tokenStream(null, document.getContenido());
+
+      Analyzer whiteAnalizer = new WhitespaceAnalyzer();
+      Analyzer simpleAnalizer = new SimpleAnalyzer();
+      Analyzer stopAnalizer = new StopAnalyzer();
+      Analyzer standardAnalizer = new StandardAnalyzer();
+      Analyzer spanishAnalizer = new SpanishAnalyzer();
+
+      DocumentAnalyzer doc = new DocumentAnalyzer(f);
+
+      tokenizeString(whiteAnalizer, doc.getContenido());
+      tokenizeString(simpleAnalizer, doc.getContenido());
+      tokenizeString(stopAnalizer, doc.getContenido());
+      tokenizeString(standardAnalizer, doc.getContenido());
+      tokenizeString(spanishAnalizer, doc.getContenido());
+    }
+  }
+
+  public static void tokenizeString(Analyzer analyzer, String content) {
+    try {
+      TokenStream stream = analyzer.tokenStream(null, new StringReader(content));
+      CharTermAttribute cAtt = stream.getAttribute(CharTermAttribute.class);
+      TermFrequencyAttribute tFreq = stream.getAttribute(TermFrequencyAttribute.class);
 
       stream.reset();
       while (stream.incrementToken()) {
-        System.out.println(stream.getAttribute(CharTermAttribute.class));
+        System.out.println(cAtt.toString() + " : " + tFreq.getTermFrequency());
       }
       stream.end();
-      stream.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 }
