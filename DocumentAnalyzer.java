@@ -28,29 +28,29 @@ import org.apache.tika.language.detect.LanguageResult;
 import org.apache.tika.langdetect.OptimaizeLangDetector;
 import org.apache.tika.language.detect.LanguageDetector;
 
-
-
-
 public class DocumentAnalyzer {
   private static Tika tika = new Tika();
   private File file;
   private String nombre;
   private String contenido;
-  private Metadata metadata; // cambio el atributo de tipo a Metadata, para facilitar el acceso a los valores.
+  private Metadata metadata; // cambio el atributo de tipo a Metadata, para facilitar el acceso a los
+                             // valores.
   private List<Link> enlaces;
   private LanguageResult language;
 
   String getNombre() {
     return nombre;
   }
-  LanguageResult getLanguageResult(){
+
+  LanguageResult getLanguageResult() {
     return language;
   }
-  
+
   List<Link> getEnlaces() {
     return enlaces;
   }
-  Metadata getMetadata(){
+
+  Metadata getMetadata() {
     return metadata;
   }
 
@@ -91,7 +91,7 @@ public class DocumentAnalyzer {
       final String word = w.toLowerCase();
       Integer n = map.get(word);
       n = (n == null) ? 1 : ++n;
-      if (Pattern.matches("\\w{3,}", word))
+      if (Pattern.matches("[a-zA-Z\\u00C0-\\u024F\\u1E00-\\u1EFF]+", word))
         map.put(word, n);
     }
 
