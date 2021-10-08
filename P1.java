@@ -1,27 +1,16 @@
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import org.apache.tika.metadata.Metadata;
-import org.apache.tika.sax.BodyContentHandler;
 
-
-import org.apache.tika.language.detect.LanguageResult;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.ParseContext;
-import java.io.InputStream;
-import java.io.Writer;
-import java.util.List;
 import java.util.ArrayList;
-
 
 public class P1 {
   public static void main(String[] args) throws Exception {
 
     if (args.length != 2) {
-      throw new IllegalArgumentException("Número de argumentos incorrectos. Argumentos: -d ; -l ; -t  args.size= " + args.length);
+      throw new IllegalArgumentException(
+          "Número de argumentos incorrectos. Argumentos: -d ; -l ; -t  args.size= " + args.length);
     }
 
     File[] files;
@@ -57,15 +46,15 @@ public class P1 {
     ArrayList<String> file_names = new ArrayList<String>();
     ArrayList<String> languages = new ArrayList<String>();
 
-      for (File f : files) {
-        System.out.println("Procesando: " + f.getName());
-        DocumentAnalyzer document = new DocumentAnalyzer(f);
-        metadata_list.add(document.getMetadata());
-        file_names.add(f.getName());
-        languages.add(document.getLanguageResult().getLanguage());
-      }
-      System.out.println("Generando tabla de metadatos...");
-      OutputHelper.csvWriterMetadata(file_names,languages,metadata_list,"metadataTable");
+    for (File f : files) {
+      System.out.println("Procesando: " + f.getName());
+      DocumentAnalyzer document = new DocumentAnalyzer(f);
+      metadata_list.add(document.getMetadata());
+      file_names.add(f.getName());
+      languages.add(document.getLanguageResult().getLanguage());
+    }
+    System.out.println("Generando tabla de metadatos...");
+    OutputHelper.csvWriterMetadata(file_names, languages, metadata_list, "metadataTable");
   }
 
   public static void generarEnlaces(File[] files) throws Exception {

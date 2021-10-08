@@ -4,10 +4,8 @@ import java.io.Writer;
 import java.util.List;
 import java.util.ArrayList;
 import org.apache.tika.sax.Link;
-import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.tika.language.detect.LanguageResult;
 import org.apache.tika.metadata.Metadata;
 
 public class OutputHelper {
