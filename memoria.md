@@ -1,4 +1,4 @@
-# ¿Qué ha hecho cada miembro?
+# Práctica 1. Preprocesado de documentos
 
 ## Adrián
 * Apartado (-d)
