@@ -1,3 +1,5 @@
+package P1;
+
 import java.io.File;
 import java.io.FileFilter;
 
@@ -37,11 +39,10 @@ public class P1 {
   }
 
   public static void generarTabla(File[] files) throws Exception {
-    // Realizar de fotma automatica una tabla que contenga el nombre del fichero,
+    // Realizar de forma automatica una tabla que contenga el nombre del fichero,
     // tipo, codificacion e idioma.
     // Te dejo esto para que puedas recorrer el directorio,
     // son las rutas, tienes que crear un file para cada uno
-    String eol = System.getProperty("line.separator");
     ArrayList<Metadata> metadata_list = new ArrayList<Metadata>();
     ArrayList<String> file_names = new ArrayList<String>();
     ArrayList<String> languages = new ArrayList<String>();

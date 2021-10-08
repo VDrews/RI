@@ -1,3 +1,5 @@
+package P1;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.FileInputStream;
