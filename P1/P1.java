@@ -65,7 +65,7 @@ public class P1 {
       for (Link link : document.getEnlaces()){
         links_list.add(link);
       }
-      OutputHelper.print(links_list,"links");
+      OutputHelper.csvWriterLinks(links_list,"links");
     }
   }
 

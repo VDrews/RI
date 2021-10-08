@@ -42,7 +42,7 @@ public class OutputHelper {
     }
   }
 
-  public static void print(List<Link> links, String pathname) {
+  public static void csvWriterLinks(List<Link> links, String pathname) {
     String eol = System.getProperty("line.separator");
     try(Writer writer = new FileWriter(pathname+".csv")) {
       writer.append("Links").append(eol);
