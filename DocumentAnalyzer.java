@@ -29,8 +29,6 @@ import org.apache.tika.langdetect.OptimaizeLangDetector;
 import org.apache.tika.language.detect.LanguageDetector;
 
 public class DocumentAnalyzer {
-  private static Tika tika = new Tika();
-  private File file;
   private String nombre;
   private String contenido;
   private Metadata metadata; // cambio el atributo de tipo a Metadata, para facilitar el acceso a los
@@ -55,7 +53,6 @@ public class DocumentAnalyzer {
   }
 
   DocumentAnalyzer(File file) throws Exception {
-    this.file = file;
     this.nombre = file.getName();
     FileInputStream inputStream = new FileInputStream(file); // creamos el inputstream
     BodyContentHandler contentHandler = new BodyContentHandler(-1);
