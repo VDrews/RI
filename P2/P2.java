@@ -1,17 +1,10 @@
-/*package P2;
+package P2;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.core.*;
-import org.apache.lucene.analysis.es.SpanishAnalyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.tokenattributes.*;
+import org.apache.lucene.analysis.standard.UAX29URLEmailTokenizer;
 
 public class P2 {
   public static void main(String[] args) throws Exception {
@@ -25,39 +18,31 @@ public class P2 {
       }
     });
     System.out.println(files.length);
-    // 1. Comparar Analizadores
-    for (File f : files) {
 
-      Analyzer whiteAnalizer = new WhitespaceAnalyzer();
-      Analyzer simpleAnalizer = new SimpleAnalyzer();
-      Analyzer stopAnalizer = new StopAnalyzer();
-      Analyzer standardAnalizer = new StandardAnalyzer();
-      Analyzer spanishAnalizer = new SpanishAnalyzer();
+    // 1. Estudio estadístico
+    // for (File f : files) {
 
-      DocumentAnalyzer doc = new DocumentAnalyzer(f);
+    // DocumentAnalyzer doc = new DocumentAnalyzer(f);
 
-      tokenizeString(whiteAnalizer, doc.getContenido());
-      tokenizeString(simpleAnalizer, doc.getContenido());
-      tokenizeString(stopAnalizer, doc.getContenido());
-      tokenizeString(standardAnalizer, doc.getContenido());
-      tokenizeString(spanishAnalizer, doc.getContenido());
-    }
+    // OutputHelper.csvWriter(doc.contador("whiteAnalyzer"),
+    // "P2/results/whiteAnalyzer/" + doc.getNombre());
+    // OutputHelper.csvWriter(doc.contador("simpleAnalyzer"),
+    // "P2/results/simpleAnalyzer/" + doc.getNombre());
+    // OutputHelper.csvWriter(doc.contador("stopAnalyzer"),
+    // "P2/results/stopAnalyzer/" + doc.getNombre());
+    // OutputHelper.csvWriter(doc.contador("spanishAnalyzer"),
+    // "P2/results/spanishAnalyzer/" + doc.getNombre());
+    // OutputHelper.csvWriter(doc.contador("defaultAnalyzer"),
+    // "P2/results/defaultAnalyzer/" + doc.getNombre());
+    // }
+
+    // 3
+    File file = new File("P2/text.txt");
+
+    DocumentAnalyzer text = new DocumentAnalyzer(file);
+
+    OutputHelper.csvWriter(text.contador("customAnalyzer"), "P2/results/2-text/" + text.getNombre());
+
   }
 
-  public static void tokenizeString(Analyzer analyzer, String content) {
-    try {
-      TokenStream stream = analyzer.tokenStream(null, new StringReader(content));
-      CharTermAttribute cAtt = stream.getAttribute(CharTermAttribute.class);
-      TermFrequencyAttribute tFreq = stream.getAttribute(TermFrequencyAttribute.class);
-
-      stream.reset();
-      while (stream.incrementToken()) {
-        System.out.println(cAtt.toString() + " : " + tFreq.getTermFrequency());
-      }
-      stream.end();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
 }
-*/

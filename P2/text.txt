@@ -1,0 +1,7 @@
+La ciencia de datos es un campo interdisciplinario que involucra métodos científicos, procesos y sistemas para extraer conocimiento o un mejor entendimiento de datos en sus diferentes formas, ya sea estructurados o no estructurados,1​ lo cual es una continuación de algunos campos de análisis de datos como la estadística, la minería de datos, el aprendizaje automático, y la analítica predictiva.1​
+
+También se define La ciencia de datos como "un concepto para unificar estadísticas, análisis de datos, aprendizaje automático, y sus métodos relacionados, a efectos de comprender y analizar los fenómenos reales",2​ empleando técnicas y teorías extraídas de muchos campos dentro del contexto de las matemáticas, la estadística, la ciencia de la información, y la informática.
+
+El ganador del premio Turing, Jim Gray, imaginó la ciencia de datos como un "cuarto paradigma" de la ciencia (empírico, teórico, computacional, y ahora basado en datos), y afirmó que "todo lo relacionado con la ciencia está cambiando debido al impacto de la tecnología de la información y el diluvio de datos".3​
+
+En este nuevo paradigma, los investigadores se apoyan de sistemas y procesos que son muy diferentes a los utilizados en el pasado, como son modelos, ecuaciones, algoritmos, así como evaluación e interpretación de resultados.

@@ -68,13 +68,16 @@ Este método al igual que el anterior, hace uso de ```FileWriter.append()``` par
 
 ### Adrián
 * Apartado (-d).
-* Apartado (-l). Actualización.
-* Clase DocumentAnalyzer.java.
+* Apartado (-l) -> Exportado a CSV
+* Constructor de DocumentAnalyzer.java
 * Método csvWriterMetadata de OutputHelper.java
 * Memoria
 
 ### Andrés
-* Clase DocumentAnalyser.java
+* Separación en clases
+* DocumentAnalyser.java 
+  * Arreglar el constructor para ser universal
+  * Método contador()
 * Métodos csvWriter y print de OutputHelper.java
 * Apartado (-l)
 * Apartado (-t)
