@@ -9,7 +9,7 @@
 
 ### Andrés
 
-* Clase DocumentAnalyser.javas
+* Clase DocumentAnalyser.java
 * Métodos csvWriter y print de OutputHelper
 * Apartado (-l)
 * Apartado (-t)
@@ -19,7 +19,7 @@
 
 ### Recorrer directorio
 
-Cogemos el segundo parámetro de la terminal (El nombre del archivo), y creamos un File con ese nombre, con <listFiles()> obtenemos los archivos que cuelgan del directorio (ignorando subdirectorios), de esta forma tenemos el listado de archivos que analizaremos.
+Cogemos el segundo parámetro de la terminal (El nombre del archivo), creamos un File con ese nombre, con ```listFiles()``` obtenemos los archivos que cuelgan del directorio (ignorando subdirectorios), de esta forma tenemos el listado de archivos que analizaremos.
 
 ### Flags de los ejercicios
 
@@ -45,7 +45,7 @@ En el constructor generamos todos los datos que podemos extraer directamente con
 
 * Metadatos
 
-Para ello usamos directamente el <AutoDetectParser>
+Para ello usamos directamente el ```AutoDetectParser```
 
 **Métodos**
 
@@ -53,7 +53,7 @@ Los métodos se encargan de extraer información más específica y en un format
 
 * contador()
 
-  Este método devuelve una lista de palabras junto al número de veces que ha aparecido en el documento
+  Este método devuelve una lista de palabras junto al número de ocurrencias que tiene en el documento
 
   Para ello toma el contenido del documento y con split, se para las palabras por espacios, ahora por cada palabra, comprobamos que no contiene carácteres extraños con la expresión regular ```[a-zA-Z\\u00C0-\\u024F\\u1E00-\\u1EFF]+```, que basicamente comprueba que este formado únicamente por carácteres y letras con tilde.
 
@@ -78,3 +78,13 @@ Representa la tabla en csv a partir de las diferentes columnas dadas (Nombre, Ti
 * ```print()```
 
 En este caso imprime la lista de enlaces dada en pantalla
+
+## Archivos de prueba
+
+En la carpeta ./test tenemos los diferentes documentos que se analizarán, hemos cogido un sample de .xml, un .doc, un .odt, y por último un html extraido del Ideal y el pdf con la memoria de prácticas.
+
+## Resultados
+
+En la carpeta ./results se encuentran los resultados que hemos extraido con nuestro programa (.csv), la nube de palabras, y la gráfica de la Ley de Zipf.
+
+Ambas la hemos realizado con el artículo del Ideal al tener un contenido más completo que el resto.
