@@ -5,11 +5,13 @@
 ### Adrián
 * Apartado (-d)
 * Clase DocumentAnalyzer.java
+  * Contenido del constructor
 * Método csvWriterMetadata de OutputHelper
 
 ### Andrés
 
 * Clase DocumentAnalyser.java
+  * Estructura de la clase y métodos
 * Métodos csvWriter y print de OutputHelper
 * Apartado (-l)
 * Apartado (-t)
