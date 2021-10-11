@@ -3,9 +3,6 @@ package P2;
 import java.io.File;
 import java.io.FileFilter;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.UAX29URLEmailTokenizer;
-
 public class P2 {
   public static void main(String[] args) throws Exception {
 
@@ -20,23 +17,18 @@ public class P2 {
     System.out.println(files.length);
 
     // 1. Estudio estadístico
-    // for (File f : files) {
+    for (File f : files) {
 
-    // DocumentAnalyzer doc = new DocumentAnalyzer(f);
+      DocumentAnalyzer doc = new DocumentAnalyzer(f);
 
-    // OutputHelper.csvWriter(doc.contador("whiteAnalyzer"),
-    // "P2/results/whiteAnalyzer/" + doc.getNombre());
-    // OutputHelper.csvWriter(doc.contador("simpleAnalyzer"),
-    // "P2/results/simpleAnalyzer/" + doc.getNombre());
-    // OutputHelper.csvWriter(doc.contador("stopAnalyzer"),
-    // "P2/results/stopAnalyzer/" + doc.getNombre());
-    // OutputHelper.csvWriter(doc.contador("spanishAnalyzer"),
-    // "P2/results/spanishAnalyzer/" + doc.getNombre());
-    // OutputHelper.csvWriter(doc.contador("defaultAnalyzer"),
-    // "P2/results/defaultAnalyzer/" + doc.getNombre());
-    // }
+      OutputHelper.csvWriter(doc.contador("whiteAnalyzer"), "P2/results/whiteAnalyzer/" + doc.getNombre());
+      OutputHelper.csvWriter(doc.contador("simpleAnalyzer"), "P2/results/simpleAnalyzer/" + doc.getNombre());
+      OutputHelper.csvWriter(doc.contador("stopAnalyzer"), "P2/results/stopAnalyzer/" + doc.getNombre());
+      OutputHelper.csvWriter(doc.contador("spanishAnalyzer"), "P2/results/spanishAnalyzer/" + doc.getNombre());
+      OutputHelper.csvWriter(doc.contador("defaultAnalyzer"), "P2/results/defaultAnalyzer/" + doc.getNombre());
+    }
 
-    // 3
+    // 3. Analizador personalizado
     File file = new File("P2/text.txt");
 
     DocumentAnalyzer text = new DocumentAnalyzer(file);

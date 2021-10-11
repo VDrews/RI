@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.*;
@@ -43,6 +46,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.UAX29URLEmailTokenizer;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.analysis.StopFilter;
 
 public class DocumentAnalyzer {
   private String nombre;
@@ -133,34 +137,41 @@ public class DocumentAnalyzer {
         analyzer = new SpanishAnalyzer();
         break;
       case "customAnalyzer":
-        System.out.println("CUSTOM ANALYZER");
         analyzer = new Analyzer() {
           @Override
           protected TokenStreamComponents createComponents(String fieldName) {
             try {
 
+              // Importamos los diccionarios
               InputStream affixStream = new FileInputStream("P2/dictionaries/es.aff");
               InputStream dictStream = new FileInputStream("P2/dictionaries/es.dic");
-              Directory directorioTemp = FSDirectory.open(Paths.get("/temp"));
+
+              // Carpeta temporal para el diccionario
+              Directory directorioTemp = FSDirectory.open(Paths.get("P2/temp"));
               Dictionary dic = new Dictionary(directorioTemp, "temporalFile", affixStream, dictStream);
+
+              // Tokenización
               Tokenizer source = new UAX29URLEmailTokenizer();
-              TokenStream result = new StandardFilter(source);
-              result = new LowerCaseFilter(result);
+
+              // Filtramos las palabras vacías
+              File stopWordsFile = new File("P2/dictionaries/stopwords.txt");
+              DocumentAnalyzer stopWordsDocumentAnalyzer = new DocumentAnalyzer(stopWordsFile);
+              Collection<String> stopWordsCollection = Arrays
+                  .asList(stopWordsDocumentAnalyzer.getContenido().split("\\r?\\n"));
+              CharArraySet stopWords = new CharArraySet(stopWordsCollection, false);
+
+              TokenStream result = new StopFilter(source, stopWords);
+
               result = new HunspellStemFilter(result, dic, true, true);
 
               return new TokenStreamComponents(source, result);
-            } catch (FileNotFoundException e) {
-              e.printStackTrace();
-            } catch (IOException e) {
-              // TODO Auto-generated catch block
-              e.printStackTrace();
-            } catch (ParseException e) {
-              // TODO Auto-generated catch block
+            } catch (Exception e) {
               e.printStackTrace();
             }
             return null;
           }
         };
+        break;
       default:
         analyzer = new StandardAnalyzer();
         break;
