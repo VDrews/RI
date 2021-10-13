@@ -43,7 +43,6 @@ import org.apache.lucene.analysis.es.SpanishAnalyzer;
 import org.apache.lucene.analysis.hunspell.Dictionary;
 import org.apache.lucene.analysis.hunspell.HunspellStemFilter;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.UAX29URLEmailTokenizer;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.analysis.StopFilter;
