@@ -92,17 +92,7 @@ public class DocumentAnalyzer {
     this.enlaces = linkContentHandler.getLinks();
   }
 
-  public List<Entry<String, Integer>> contador() throws IOException, TikaException {
-    String[] parts = this.contenido.split(" ");
-    Map<String, Integer> map = new HashMap<String, Integer>();
-    for (String w : parts) {
-      final String word = w.toLowerCase();
-      Integer n = map.get(word);
-      n = (n == null) ? 1 : ++n;
-      if (Pattern.matches("[a-zA-Z\\u00C0-\\u024F\\u1E00-\\u1EFF]+", word))
-        map.put(word, n);
-    }
-
+  private List<Entry<String, Integer>> hashMapToSortedArray(Map<String, Integer> map) {
     Set<Entry<String, Integer>> entries = map.entrySet();
     Comparator<Entry<String, Integer>> valueComparator = new Comparator<Entry<String, Integer>>() {
       @Override
@@ -116,10 +106,33 @@ public class DocumentAnalyzer {
     List<Entry<String, Integer>> orderedList = new ArrayList<Entry<String, Integer>>(entries);
 
     Collections.sort(orderedList, valueComparator);
+
     return orderedList;
   }
 
-  public List<Entry<String, Integer>> contador(String analyzerType) throws IOException, TikaException {
+  private CharArraySet getStopWords() throws Exception {
+    File stopWordsFile = new File("P2/dictionaries/stopwords.txt");
+    DocumentAnalyzer stopWordsDocumentAnalyzer = new DocumentAnalyzer(stopWordsFile);
+    Collection<String> stopWordsCollection = Arrays.asList(stopWordsDocumentAnalyzer.getContenido().split("\\r?\\n"));
+    CharArraySet stopWords = new CharArraySet(stopWordsCollection, false);
+    return stopWords;
+  }
+
+  public List<Entry<String, Integer>> contador() throws IOException, TikaException {
+    String[] parts = this.contenido.split(" ");
+    Map<String, Integer> map = new HashMap<String, Integer>();
+    for (String w : parts) {
+      final String word = w.toLowerCase();
+      Integer n = map.get(word);
+      n = (n == null) ? 1 : ++n;
+      if (Pattern.matches("[a-zA-Z\\u00C0-\\u024F\\u1E00-\\u1EFF]+", word))
+        map.put(word, n);
+    }
+
+    return hashMapToSortedArray(map);
+  }
+
+  public List<Entry<String, Integer>> contador(String analyzerType) throws Exception {
 
     Analyzer analyzer;
     switch (analyzerType) {
@@ -130,7 +143,7 @@ public class DocumentAnalyzer {
         analyzer = new SimpleAnalyzer();
         break;
       case "stopAnalyzer":
-        analyzer = new StopAnalyzer();
+        analyzer = new StopAnalyzer(getStopWords());
         break;
       case "spanishAnalyzer":
         analyzer = new SpanishAnalyzer();
@@ -153,13 +166,7 @@ public class DocumentAnalyzer {
               Tokenizer source = new UAX29URLEmailTokenizer();
 
               // Filtramos las palabras vacías
-              File stopWordsFile = new File("P2/dictionaries/stopwords.txt");
-              DocumentAnalyzer stopWordsDocumentAnalyzer = new DocumentAnalyzer(stopWordsFile);
-              Collection<String> stopWordsCollection = Arrays
-                  .asList(stopWordsDocumentAnalyzer.getContenido().split("\\r?\\n"));
-              CharArraySet stopWords = new CharArraySet(stopWordsCollection, false);
-
-              TokenStream result = new StopFilter(source, stopWords);
+              TokenStream result = new StopFilter(source, getStopWords());
 
               result = new HunspellStemFilter(result, dic, true, true);
 
@@ -197,19 +204,6 @@ public class DocumentAnalyzer {
         map.put(word, n);
     }
 
-    Set<Entry<String, Integer>> entries = map.entrySet();
-    Comparator<Entry<String, Integer>> valueComparator = new Comparator<Entry<String, Integer>>() {
-      @Override
-      public int compare(Entry<String, Integer> e1, Entry<String, Integer> e2) {
-        Integer v1 = e1.getValue();
-        Integer v2 = e2.getValue();
-        return v2.compareTo(v1);
-      }
-    };
-
-    List<Entry<String, Integer>> orderedList = new ArrayList<Entry<String, Integer>>(entries);
-
-    Collections.sort(orderedList, valueComparator);
-    return orderedList;
+    return hashMapToSortedArray(map);
   }
 }
