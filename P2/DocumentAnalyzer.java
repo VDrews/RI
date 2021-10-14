@@ -212,4 +212,13 @@ public class DocumentAnalyzer {
     Collections.sort(orderedList, valueComparator);
     return orderedList;
   }
+
+
+  //Método que aplica un tokenizador estandar o custom y que aplica los diferentes filtros.  
+  //Generando las diferentes salidas con ayuda de la clase OutputHelper.
+
+  public void applyDifferentFilters(File f){
+
+  }
+
 }
