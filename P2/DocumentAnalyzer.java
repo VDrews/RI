@@ -40,6 +40,18 @@ import org.apache.tika.language.detect.LanguageDetector;
 
 import org.apache.lucene.analysis.core.*;
 import org.apache.lucene.analysis.es.SpanishAnalyzer;
+import org.apache.lucene.analysis.standard.StandardFilter;
+import org.apache.lucene.analysis.TokenFilter;
+import org.apache.lucene.analysis.snowball.SnowballFilter;
+import org.apache.lucene.analysis.shingle.ShingleFilter;
+import org.apache.lucene.analysis.ngram.EdgeNGramTokenFilter;
+import org.apache.lucene.analysis.ngram.NGramTokenFilter;
+import org.apache.lucene.analysis.commongrams.CommonGramsFilter;
+import org.apache.lucene.analysis.synonym.SynonymFilter;
+import org.apache.lucene.analysis.synonym.SynonymFilter;
+import org.apache.lucene.analysis.Analyzer.TokenStreamComponents;
+import org.apache.lucene.util.Version;
+import org.apache.lucene.analysis.synonym.SynonymMap;
 import org.apache.lucene.analysis.hunspell.Dictionary;
 import org.apache.lucene.analysis.hunspell.HunspellStemFilter;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -116,6 +128,14 @@ public class DocumentAnalyzer {
     Collection<String> stopWordsCollection = Arrays.asList(stopWordsDocumentAnalyzer.getContenido().split("\\r?\\n"));
     CharArraySet stopWords = new CharArraySet(stopWordsCollection, false);
     return stopWords;
+  }
+
+  private CharArraySet getCommonWords()throws Exception{
+    File commonWordsFile = new File("P2/dictionaries/commonWords.txt");
+    DocumentAnalyzer commondWordsDocumentAnalyzer = new DocumentAnalyzer(commonWordsFile);
+    Collection<String> commondWordsCollection = Arrays.asList(commondWordsDocumentAnalyzer.getContenido().split("\\r?\\n"));
+    CharArraySet commondWords = new CharArraySet(commondWordsCollection, true); // true para no distinguir entre mayusculas y minusculas
+    return commondWords;
   }
 
   public List<Entry<String, Integer>> contador() throws IOException, TikaException {
@@ -211,8 +231,263 @@ public class DocumentAnalyzer {
   // diferentes filtros.
   // Generando las diferentes salidas con ayuda de la clase OutputHelper.
 
+<<<<<<< Updated upstream
   public void applyDifferentFilters(File f) {
+=======
+  //Método que aplica un tokenizador estandar o custom y que aplica los diferentes filtros.  
+  //Generando las diferentes salidas con ayuda de la clase OutputHelper.
+
+  public List<String> applyDifferentFilter(int i) throws IOException{
+    Analyzer analyzer;
+    String filterName = new String();
+    switch (i){
+      //StandardFilter
+      case 1:
+      filterName="StandardFilter";
+      analyzer = new Analyzer() {
+        @Override
+        protected TokenStreamComponents createComponents(String fieldName) {
+          try {
+            // Tokenización
+            Tokenizer source = new UAX29URLEmailTokenizer();
+    
+            // Filtramos con  el filtro standard
+            TokenStream std_filter = new StandardFilter(source);
+    
+            return new TokenStreamComponents(source, std_filter);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+        };
+      break;
+
+      //LowerCaseFilter
+      case 2:
+      filterName="LowerCaseFilter";
+      analyzer = new Analyzer() {
+        @Override
+        protected TokenStreamComponents createComponents(String fieldName) {
+          try {  
+            // Tokenización
+            Tokenizer source = new UAX29URLEmailTokenizer();
+    
+            // Filtramos las palabras vacías
+            TokenStream low_case_filter = new LowerCaseFilter(source);
+    
+            return new TokenStreamComponents(source, low_case_filter);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+        };
+
+      break;
+      //StopWordsFilter
+      case 3:
+      filterName="StopWordsFilter";
+      analyzer = new Analyzer() {
+        @Override
+        protected TokenStreamComponents createComponents(String fieldName) {
+          try {    
+            // Tokenización
+            Tokenizer source = new UAX29URLEmailTokenizer();
+    
+            // Filtramos las palabras vacías
+            TokenStream result = new StopFilter(source, getStopWords());
+    
+            return new TokenStreamComponents(source, result);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+        };
+
+      break;
+      //SnowBallFilter
+      case 4:
+      filterName="SnowBallFilter";
+      analyzer = new Analyzer() {
+        @Override
+        protected TokenStreamComponents createComponents(String fieldName) {
+          try {
+    
+            // Tokenización
+            Tokenizer source = new UAX29URLEmailTokenizer();
+    
+            // Filtramos las palabras vacías
+            TokenStream snowBall_filter = new SnowballFilter(source, "Spanish");
+    
+            return new TokenStreamComponents(source, snowBall_filter);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+        };
+
+      break;
+      //ShingleFilter
+      case 5:   
+      filterName="ShingleFilter";
+      analyzer = new Analyzer() {
+        @Override
+        protected TokenStreamComponents createComponents(String fieldName) {
+          try {
+            // Tokenización
+            Tokenizer source = new UAX29URLEmailTokenizer();
+    
+            // Filtramos las palabras vacías
+            TokenStream  shingle_filter = new ShingleFilter(source); // shingle_size = 2 por defecto
+    
+            return new TokenStreamComponents(source, shingle_filter);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+        };
+
+      break;
+      //EdgeNGramFilter
+      case 6:
+      filterName="EdgeNGramFilter";
+      analyzer = new Analyzer() {
+        @Override
+        protected TokenStreamComponents createComponents(String fieldName) {
+          try {  
+            // Tokenización
+            Tokenizer source = new UAX29URLEmailTokenizer();
+    
+            // Filtramos las palabras vacías
+            int gramSize = 2; // tamaño del grano para la generación de bigramas
+            TokenStream edge_filter = new EdgeNGramTokenFilter(source, gramSize, gramSize+1); // estamos en version 7.1 
+          
+            return new TokenStreamComponents(source, edge_filter);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+        };
+
+      break;
+      //NGramTokenFilter
+      case 7:
+      filterName="NGramTokenFilter";
+      analyzer = new Analyzer() {
+        @Override
+        protected TokenStreamComponents createComponents(String fieldName) {
+          try {
+            // Tokenización
+            Tokenizer source = new UAX29URLEmailTokenizer();
+    
+            // Filtramos las palabras vacías
+            int gramSize = 2; // tamaño del grano para la generación de bigramas
+            TokenStream nGramToken_filter = new NGramTokenFilter(source, gramSize, gramSize+1);
+    
+            return new TokenStreamComponents(source, nGramToken_filter);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+        };
+
+      break;
+      //CommonGramsFilter
+      case 8:
+      filterName="CommonGramsFilter";
+      analyzer = new Analyzer() {
+        @Override
+        protected TokenStreamComponents createComponents(String fieldName) {
+          try {  
+            // Tokenización
+            Tokenizer source = new UAX29URLEmailTokenizer();
+    
+            // Filtramos las palabras vacías
+            TokenStream commonGram_filter =  new CommonGramsFilter(source, getCommonWords());
+    
+            return new TokenStreamComponents(source, commonGram_filter);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+        };
+
+      break;
+      //SyonymFilter
+      case 9:
+      filterName="SyonymFilter";
+      analyzer = new Analyzer() {
+        @Override
+        protected TokenStreamComponents createComponents(String fieldName) {
+          try {
+    
+            // Importamos los diccionarios
+            InputStream affixStream = new FileInputStream("P2/dictionaries/es.aff");
+            InputStream dictStream = new FileInputStream("P2/dictionaries/es.dic");
+    
+            // Carpeta temporal para el diccionario
+            Directory directorioTemp = FSDirectory.open(Paths.get("P2/temp"));
+            Dictionary dic = new Dictionary(directorioTemp, "temporalFile", affixStream, dictStream);
+    
+            // Tokenización
+            Tokenizer source = new UAX29URLEmailTokenizer();
+    
+            // Filtramos las palabras vacías
+            TokenStream result = new StopFilter(source, getStopWords());
+    
+            return new TokenStreamComponents(source, result);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+        };
+      break;
+      default:
+      analyzer = new StandardAnalyzer();
+      break;
+    }
+
+    TokenStream stream = analyzer.tokenStream(null, new StringReader(contenido));
+    CharTermAttribute cAtt = stream.getAttribute(CharTermAttribute.class);
+
+    stream.reset();
+
+    ArrayList<String> text = new ArrayList<String>();
+
+    text.add("\n");
+    text.add(filterName.toUpperCase());
+    text.add("\n");
+
+    while (stream.incrementToken()) {
+      text.add(cAtt.toString());
+    }
+    stream.end();
+    analyzer.close();
+
+
+
+      
+      //SynonymMap synonymMap = new SynonymMap(FST<BytesRef> fst,BytesRefHash words,int maxHorizontalContext)
+      //TokenStream synonym_result = new SynonymFilter(source, synonymMap, false);
+
+      //TODO- Buscar un mapa de synonimos. 
+      // Recorrer los TokenStream y utilizar outputhelper para escribir y concatenar los resultados.
+      // buscar como concatenar y no sobreescribir con append un file con filewriter.
+      // 
+
+
+    return text;
+>>>>>>> Stashed changes
 
   }
+
 
 }

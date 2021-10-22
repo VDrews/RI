@@ -50,4 +50,15 @@ public class OutputHelper {
     }
     System.out.println("\n\n");
   }
+
+  public static void txtWriterFromStringList(String pathname, List<String> texto){
+    try (Writer writer = new FileWriter(pathname +".txt")){
+      String listString = String.join(" ", texto);
+      writer.append(listString);
+      
+
+  }catch(IOException ex){
+    ex.printStackTrace(System.err);
+  }
+}
 }
