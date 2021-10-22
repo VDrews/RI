@@ -20,7 +20,7 @@ Abrimos el TokenStream y la recorremos obteniendo todos los CharTermAttribute, p
 
 Finalmente, lo convertimos a array y lo ordenamos de igual forma que hicimos en la práctica anterior, por ese motivo, creamos el método privado ```hashMapToSortedArray()```.
 
-Finalmente en el main, nos recorremos todos los archivos del directorio test, y por cada uno lo procesamos con los diferentes analizadores, y los guardamos en carpetas separadas por el analizador utilizado.ss
+Finalmente en el main, nos recorremos todos los archivos del directorio test, y por cada uno lo procesamos con los diferentes analizadores, y los guardamos en carpetas separadas por el analizador utilizado.
 
 ### Análisis
 Para realizar el análisis tomaremos los csv de ideal como referencia, para cada uno de los analizadores
@@ -30,7 +30,7 @@ P2/
 │  ├─ defaultAnalyzer/
 │  │  ├─ catalog.xml.csv
 │  │  ├─ ideal.html.csv
-│  │  ├─ ....csv
+│  │  ├─ *.csv
 │  ├─ simpleAnalyzer/
 │  ├─ .../
 
@@ -84,9 +84,9 @@ analyzer = new Analyzer() {
 Para ello hemos utilizado:
 
 ### Tokenizer
-- ```UAX29URLEmailTokenizer```: Tokenizará nuestro texto incluyendo emails y URLS, aunque estos últimos desaparecerán con los siguientes filtros.
+- ```UAX29URLEmailTokenizer```: Tokenizará nuestro texto incluyendo emails y URLS.
 ### Filtros
-- ```StopFilter```: Filtrará las palabras vacías que le sindiquemos.
+- ```StopFilter```: Filtrará las palabras vacías que le indiquemos.
   - Hemos usado el archivo stopwords.txt, donde indicamos que palabras vacías queremos que se filtren
 - ```HunspellStemFilter```: A diferencia de SpanishAnalyzer, en vez de obtener la raíz. tranforma las derivaciones de los tokens en la palabra principal, por ejemplo en verbos nos lo transformará a infinitivo
   Hemos usado los siguientes archivos adicionales para realizarlo:

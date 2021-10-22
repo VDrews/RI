@@ -14,7 +14,6 @@ public class P2 {
         return pathname.isFile();
       }
     });
-    System.out.println(files.length);
 
     // 1. Estudio estadístico
     for (File f : files) {
@@ -28,21 +27,21 @@ public class P2 {
       OutputHelper.csvWriter(doc.contador("defaultAnalyzer"), "P2/results/defaultAnalyzer/" + doc.getNombre());
     }
 
-    // Llamar a un método de la clase DocumentAnalyzer que procese el texto y aplique los diferentes filtros.
+    // Llamar a un método de la clase DocumentAnalyzer que procese el texto y
+    // aplique los diferentes filtros.
     // Recoger los resultados en un vector de files.
-     File tiny_text = new File("P2/text.txt");
-     DocumentAnalyzer doc = new DocumentAnalyzer(f);
+    // File tiny_text = new File("P2/text.txt");
+    // DocumentAnalyzer doc = new DocumentAnalyzer(f);
 
-     doc.applyDifferentFilters(tiny_text);
-     DocumentAnalyzer.applyDifferentFilters(tiny_text);
+    // doc.applyDifferentFilters(tiny_text);
+    // DocumentAnalyzer.applyDifferentFilters(tiny_text);
 
-    // 3. Analizador personalizado
+    // // 3. Analizador personalizado
     File file = new File("P2/text.txt");
-
 
     DocumentAnalyzer text = new DocumentAnalyzer(file);
 
-    OutputHelper.csvWriter(text.contador("customAnalyzer"), "P2/results/2-text/" + text.getNombre());
+    OutputHelper.csvWriter(text.contador("customAnalyzer"), "P2/results/3-text/" + text.getNombre());
 
   }
 

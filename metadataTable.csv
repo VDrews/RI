@@ -1,0 +1,7 @@
+Name;Type;Encoding;Language
+Tika2122.pdf;application/pdf;null;es
+catalog.xml;application/xml;null;en
+file-sample_500kB.doc;application/msword;null;ca
+quijote.txt;text/plain; charset=UTF-8;UTF-8;es
+file-sample_500kB.odt;application/vnd.oasis.opendocument.text;null;ca
+ideal.html;text/html; charset=UTF-8;UTF-8;es
