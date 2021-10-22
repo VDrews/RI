@@ -473,20 +473,42 @@ public class DocumentAnalyzer {
     stream.end();
     analyzer.close();
 
-
-
-      
-      //SynonymMap synonymMap = new SynonymMap(FST<BytesRef> fst,BytesRefHash words,int maxHorizontalContext)
-      //TokenStream synonym_result = new SynonymFilter(source, synonymMap, false);
-
-      //TODO- Buscar un mapa de synonimos. 
-      // Recorrer los TokenStream y utilizar outputhelper para escribir y concatenar los resultados.
-      // buscar como concatenar y no sobreescribir con append un file con filewriter.
-      // 
-
-
     return text;
+  }
 
+  public List<String> last4CaractersFilter() throws IOException{
+    Analyzer analyzer;
+    analyzer = new Analyzer() {
+      @Override
+      protected TokenStreamComponents createComponents(String fieldName) {
+        try {
+          // Tokenización
+          Tokenizer source = new UAX29URLEmailTokenizer();
+
+          // Filtramos con el filtro customizado (se queda con los 4 ultimos caracteres de cada token)
+          TokenStream result = new CustomFilter(source);
+  
+          return new TokenStreamComponents(source, result);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        return null;
+      }
+      };
+
+    TokenStream stream = analyzer.tokenStream(null, new StringReader(contenido));
+    CharTermAttribute cAtt = stream.getAttribute(CharTermAttribute.class);
+
+    stream.reset();
+
+    ArrayList<String> text = new ArrayList<String>();
+    while (stream.incrementToken()) {
+      text.add(cAtt.toString());
+    }
+    stream.end();
+    analyzer.close();
+
+    return text; 
   }
 
 

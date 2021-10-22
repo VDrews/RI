@@ -52,7 +52,16 @@ public class P2 {
 
     OutputHelper.csvWriter(text.contador("customAnalyzer"), "P2/results/3-text/" + text.getNombre());
     System.out.println("Fin de la aplicacion de un analizador customizado");
+  
+  
+    //4. Elimnar los 4 ultimos caracteres de los token de un TokenStream. Utilizamos mismo texto que para 3.
+    System.out.println("Inicio de la aplicacion de un filtro customizado");
+    OutputHelper.txtWriterFromStringList("./P2/results/4-text/4-text", doc.last4CaractersFilter());
+    System.out.println("Fin de la aplicacion de un filtro customizado");
+
 
   }
+
+
 
 }
