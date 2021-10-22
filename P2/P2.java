@@ -31,25 +31,13 @@ public class P2 {
     }
     System.out.println("Fin del estudio estadistico");
 
-<<<<<<< Updated upstream
-    // Llamar a un método de la clase DocumentAnalyzer que procese el texto y
-    // aplique los diferentes filtros.
-    // Recoger los resultados en un vector de files.
-    // File tiny_text = new File("P2/text.txt");
-    // DocumentAnalyzer doc = new DocumentAnalyzer(f);
-
-    // doc.applyDifferentFilters(tiny_text);
-    // DocumentAnalyzer.applyDifferentFilters(tiny_text);
-
-    // // 3. Analizador personalizado
-=======
     // 2. Comparacion de filtros a un texto pequeño
     System.out.println("Inicio de la aplicacion de filtros");
 
     File tiny_text = new File("P2/text.txt");
     ArrayList<String> filteredTexts = new ArrayList();
     DocumentAnalyzer doc = new DocumentAnalyzer(tiny_text);
-    for (int i = 1; i<=8;++i){
+    for (int i = 1; i<=9;++i){
       filteredTexts.addAll(doc.applyDifferentFilter(i));
     }
     OutputHelper.txtWriterFromStringList("./P2/results/differentFiltersResults/differentFiltersResults", filteredTexts);
@@ -58,17 +46,12 @@ public class P2 {
     // 3. Analizador personalizado
     System.out.println("Inicio de la aplicacion de un analizador customizado");
 
->>>>>>> Stashed changes
     File file = new File("P2/text.txt");
 
     DocumentAnalyzer text = new DocumentAnalyzer(file);
 
-<<<<<<< Updated upstream
     OutputHelper.csvWriter(text.contador("customAnalyzer"), "P2/results/3-text/" + text.getNombre());
-=======
-    OutputHelper.csvWriter(text.contador("customAnalyzer"), "P2/results/2-text/" + text.getNombre());
     System.out.println("Fin de la aplicacion de un analizador customizado");
->>>>>>> Stashed changes
 
   }
 

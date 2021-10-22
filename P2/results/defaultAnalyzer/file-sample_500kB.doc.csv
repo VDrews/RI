@@ -1,5 +1,6 @@
 Text;Size
 ut;37
+in;24
 fringilla;24
 vitae;23
 sit;23
@@ -22,8 +23,6 @@ erat;16
 mauris;16
 efficitur;15
 velit;14
-ante;14
-mi;14
 maecenas;14
 fermentum;13
 cras;13
@@ -51,6 +50,7 @@ posuere;9
 lectus;9
 viverra;9
 libero;9
+at;8
 congue;8
 auctor;8
 tristique;8
@@ -91,7 +91,6 @@ porttitor;5
 vivamus;5
 molestie;5
 eu;5
-ex;5
 tortor;5
 fusce;4
 convallis;4

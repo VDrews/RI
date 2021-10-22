@@ -50,6 +50,7 @@ import org.apache.lucene.analysis.commongrams.CommonGramsFilter;
 import org.apache.lucene.analysis.synonym.SynonymFilter;
 import org.apache.lucene.analysis.synonym.SynonymFilter;
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents;
+import org.apache.lucene.util.CharsRef;
 import org.apache.lucene.util.Version;
 import org.apache.lucene.analysis.synonym.SynonymMap;
 import org.apache.lucene.analysis.hunspell.Dictionary;
@@ -138,6 +139,18 @@ public class DocumentAnalyzer {
     return commondWords;
   }
 
+   //Método que construye map de sinonimos.
+  private static SynonymMap getSynonymMap() throws IOException {
+    SynonymMap.Builder builder = new SynonymMap.Builder(true);
+    builder.add(new CharsRef("ciencia"), new CharsRef("tecnología"), true);
+    builder.add(new CharsRef("interdisciplinario"), new CharsRef("multidisciplinario"), true);
+    builder.add(new CharsRef("investigadores"), new CharsRef("cientificos"), true);
+    builder.add(new CharsRef("diferentes"), new CharsRef("distintos"), true);
+    builder.add(new CharsRef("metodo"), new CharsRef("procedimiento"), true);
+
+    return builder.build();
+} 
+
   public List<Entry<String, Integer>> contador() throws IOException, TikaException {
     String[] parts = this.contenido.split(" ");
     Map<String, Integer> map = new HashMap<String, Integer>();
@@ -199,7 +212,7 @@ public class DocumentAnalyzer {
         };
         break;
       default:
-        analyzer = new StandardAnalyzer();
+        analyzer = new StandardAnalyzer(getStopWords());
         break;
     }
 
@@ -231,9 +244,6 @@ public class DocumentAnalyzer {
   // diferentes filtros.
   // Generando las diferentes salidas con ayuda de la clase OutputHelper.
 
-<<<<<<< Updated upstream
-  public void applyDifferentFilters(File f) {
-=======
   //Método que aplica un tokenizador estandar o custom y que aplica los diferentes filtros.  
   //Generando las diferentes salidas con ayuda de la clase OutputHelper.
 
@@ -427,20 +437,11 @@ public class DocumentAnalyzer {
         @Override
         protected TokenStreamComponents createComponents(String fieldName) {
           try {
-    
-            // Importamos los diccionarios
-            InputStream affixStream = new FileInputStream("P2/dictionaries/es.aff");
-            InputStream dictStream = new FileInputStream("P2/dictionaries/es.dic");
-    
-            // Carpeta temporal para el diccionario
-            Directory directorioTemp = FSDirectory.open(Paths.get("P2/temp"));
-            Dictionary dic = new Dictionary(directorioTemp, "temporalFile", affixStream, dictStream);
-    
             // Tokenización
             Tokenizer source = new UAX29URLEmailTokenizer();
     
             // Filtramos las palabras vacías
-            TokenStream result = new StopFilter(source, getStopWords());
+            TokenStream result = new SynonymFilter(source, getSynonymMap(), false);
     
             return new TokenStreamComponents(source, result);
           } catch (Exception e) {
@@ -485,7 +486,6 @@ public class DocumentAnalyzer {
 
 
     return text;
->>>>>>> Stashed changes
 
   }
 
