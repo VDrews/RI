@@ -13,7 +13,11 @@ import org.apache.lucene.index.IndexWriter;
 
 public class P3 {
 
+String indexpath = "./index";
+String docPath = "./datasets";
+boolean  create = true;
 private IndexWriter writer;
+
 
     public static void main(String[] args) {
         
