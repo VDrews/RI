@@ -4,7 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
-import java.util.ArrayList;
 import org.apache.tika.sax.Link;
 import java.util.Map.Entry;
 

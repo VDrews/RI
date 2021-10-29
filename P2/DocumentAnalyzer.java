@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,17 +39,13 @@ import org.apache.tika.language.detect.LanguageDetector;
 import org.apache.lucene.analysis.core.*;
 import org.apache.lucene.analysis.es.SpanishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardFilter;
-import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.snowball.SnowballFilter;
 import org.apache.lucene.analysis.shingle.ShingleFilter;
 import org.apache.lucene.analysis.ngram.EdgeNGramTokenFilter;
 import org.apache.lucene.analysis.ngram.NGramTokenFilter;
 import org.apache.lucene.analysis.commongrams.CommonGramsFilter;
 import org.apache.lucene.analysis.synonym.SynonymFilter;
-import org.apache.lucene.analysis.synonym.SynonymFilter;
-import org.apache.lucene.analysis.Analyzer.TokenStreamComponents;
 import org.apache.lucene.util.CharsRef;
-import org.apache.lucene.util.Version;
 import org.apache.lucene.analysis.synonym.SynonymMap;
 import org.apache.lucene.analysis.hunspell.Dictionary;
 import org.apache.lucene.analysis.hunspell.HunspellStemFilter;
@@ -283,7 +277,7 @@ public class DocumentAnalyzer {
             // Tokenización
             Tokenizer source = new UAX29URLEmailTokenizer();
     
-            // Filtramos las palabras vacías
+            // Filtramos las mayusculas
             TokenStream low_case_filter = new LowerCaseFilter(source);
     
             return new TokenStreamComponents(source, low_case_filter);
@@ -328,7 +322,7 @@ public class DocumentAnalyzer {
             // Tokenización
             Tokenizer source = new UAX29URLEmailTokenizer();
     
-            // Filtramos las palabras vacías
+            // Stemmer
             TokenStream snowBall_filter = new SnowballFilter(source, "Spanish");
     
             return new TokenStreamComponents(source, snowBall_filter);
@@ -350,7 +344,7 @@ public class DocumentAnalyzer {
             // Tokenización
             Tokenizer source = new UAX29URLEmailTokenizer();
     
-            // Filtramos las palabras vacías
+            // Filtramos con shingle
             TokenStream  shingle_filter = new ShingleFilter(source); // shingle_size = 2 por defecto
     
             return new TokenStreamComponents(source, shingle_filter);
@@ -372,7 +366,7 @@ public class DocumentAnalyzer {
             // Tokenización
             Tokenizer source = new UAX29URLEmailTokenizer();
     
-            // Filtramos las palabras vacías
+            // Filtramos con EdgeNGramFilter
             int gramSize = 2; // tamaño del grano para la generación de bigramas
             TokenStream edge_filter = new EdgeNGramTokenFilter(source, gramSize, gramSize+1); // estamos en version 7.1 
           
@@ -395,7 +389,7 @@ public class DocumentAnalyzer {
             // Tokenización
             Tokenizer source = new UAX29URLEmailTokenizer();
     
-            // Filtramos las palabras vacías
+            // Filtramos con NGramTokenFilter
             int gramSize = 2; // tamaño del grano para la generación de bigramas
             TokenStream nGramToken_filter = new NGramTokenFilter(source, gramSize, gramSize+1);
     
@@ -418,7 +412,7 @@ public class DocumentAnalyzer {
             // Tokenización
             Tokenizer source = new UAX29URLEmailTokenizer();
     
-            // Filtramos las palabras vacías
+            // Filtramos con CommonGramsFilters
             TokenStream commonGram_filter =  new CommonGramsFilter(source, getCommonWords());
     
             return new TokenStreamComponents(source, commonGram_filter);
@@ -440,7 +434,7 @@ public class DocumentAnalyzer {
             // Tokenización
             Tokenizer source = new UAX29URLEmailTokenizer();
     
-            // Filtramos las palabras vacías
+            // Filtramos con SyonymFilter
             TokenStream result = new SynonymFilter(source, getSynonymMap(), false);
     
             return new TokenStreamComponents(source, result);

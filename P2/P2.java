@@ -58,10 +58,5 @@ public class P2 {
     System.out.println("Inicio de la aplicacion de un filtro customizado");
     OutputHelper.txtWriterFromStringList("./P2/results/4-text/4-text", doc.last4CaractersFilter());
     System.out.println("Fin de la aplicacion de un filtro customizado");
-
-
   }
-
-
-
 }
