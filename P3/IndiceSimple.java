@@ -68,7 +68,7 @@ public class IndiceSimple {
         iwc.setSimilarity(similarity);
         iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
-        Directory dir = FSDirectory.open(Paths.get("./P3"));
+        Directory dir = FSDirectory.open(Paths.get("./P3/index"));
 
         writer = new IndexWriter(dir, iwc);
     }
