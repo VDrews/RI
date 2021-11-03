@@ -96,6 +96,13 @@ public class IndiceSimple {
 
             // new FileReader(fichero)
             Document doc = new Document();
+
+            System.out.println(subdoc[HEADERS.AuthorsID]);
+            System.out.println(subdoc[HEADERS.Title]);
+            System.out.println(subdoc[HEADERS.Year]);
+            System.out.println(subdoc[HEADERS.Abstract]);
+            System.out.println(subdoc[HEADERS.AuthorKeywords]);
+
             // Los autores deberian dividirse
             doc.add(new StringField("Authors", subdoc[HEADERS.AuthorsID], Field.Store.YES));
             doc.add(new TextField("Title", subdoc[HEADERS.Title], Field.Store.YES));
