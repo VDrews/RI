@@ -21,6 +21,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.IntPoint;
+import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.search.similarities.ClassicSimilarity;
@@ -105,12 +106,13 @@ public class IndiceSimple {
             System.out.println(subdoc[HEADERS.AuthorKeywords]);
 
             // Los autores deberian dividirse
-            doc.add(new StringField("Authors", subdoc[HEADERS.AuthorsID], Field.Store.YES));
+            doc.add(new StringField("Authors", subdoc[HEADERS.Author], Field.Store.YES));
             doc.add(new TextField("Title", subdoc[HEADERS.Title], Field.Store.YES));
             doc.add(new IntPoint("Year", Integer.parseInt(subdoc[HEADERS.Year])));
             doc.add(new TextField("Content", subdoc[HEADERS.Abstract], Field.Store.YES));
             doc.add(new TextField("Keywords", subdoc[HEADERS.AuthorKeywords], Field.Store.YES));
             doc.add(new IntPoint("PageCount", Integer.parseInt(subdoc[HEADERS.PageCount])));
+            doc.add(new StoredField("PageCount",Integer.parseInt(subdoc[HEADERS.PageCount])));
             // Integer start = ?;
             // Integer end = ?;
 
