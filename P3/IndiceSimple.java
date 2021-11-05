@@ -89,11 +89,10 @@ public class IndiceSimple {
     // Método para recoger la informacion de indexacion de los documentos, y
     // añadirlos al indice.
     public void indexarDocumentos(File file) throws FileNotFoundException, IOException, CsvException {
-
-        // String cadena = leerDocumento(d);
-        List<String[]> documentos = leerCsv(new FileReader(file.getAbsoluteFile()));
-        for (String[] subdoc : documentos) {
-
+        CSVReader reader = new CSVReader(new FileReader(file.getAbsoluteFile()));
+        String subdoc [];
+        reader.readNext(); //leemos la linea de headers sin recogerla.
+        while((subdoc = reader.readNext()) != null){
             // new FileReader(fichero)
             Document doc = new Document();
 
@@ -126,6 +125,9 @@ public class IndiceSimple {
             // doc.add(new TextField("Body", cuerpo, Field.Store.YES));
 
             writer.addDocument(doc);
+            
+
+
         }
     }
 
