@@ -109,6 +109,7 @@ public class IndiceSimple {
             doc.add(new IntPoint("Year", Integer.parseInt(subdoc[HEADERS.Year])));
             doc.add(new TextField("Content", subdoc[HEADERS.Abstract], Field.Store.YES));
             doc.add(new TextField("Keywords", subdoc[HEADERS.AuthorKeywords], Field.Store.YES));
+            doc.add(new IntPoint("PageCount", Integer.parseInt(subdoc[HEADERS.PageCount])));
             // Integer start = ?;
             // Integer end = ?;
 
