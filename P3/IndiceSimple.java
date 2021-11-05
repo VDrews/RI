@@ -77,6 +77,7 @@ public class IndiceSimple {
         return "";
     }
 
+    /*
     public static List<String[]> leerCsv(Reader reader) throws IOException, CsvException {
         CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
         List<String[]> list = new ArrayList<>();
@@ -85,6 +86,7 @@ public class IndiceSimple {
         csvReader.close();
         return list;
     }
+    */
 
     // Método para recoger la informacion de indexacion de los documentos, y
     // añadirlos al indice.
