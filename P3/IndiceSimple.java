@@ -79,23 +79,20 @@ public class IndiceSimple {
     }
 
     /*
-    public static List<String[]> leerCsv(Reader reader) throws IOException, CsvException {
-        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
-        List<String[]> list = new ArrayList<>();
-        list = csvReader.readAll();
-        reader.close();
-        csvReader.close();
-        return list;
-    }
-    */
+     * public static List<String[]> leerCsv(Reader reader) throws IOException,
+     * CsvException { CSVReader csvReader = new
+     * CSVReaderBuilder(reader).withSkipLines(1).build(); List<String[]> list = new
+     * ArrayList<>(); list = csvReader.readAll(); reader.close(); csvReader.close();
+     * return list; }
+     */
 
     // Método para recoger la informacion de indexacion de los documentos, y
     // añadirlos al indice.
     public void indexarDocumentos(File file) throws FileNotFoundException, IOException, CsvException {
         CSVReader reader = new CSVReader(new FileReader(file.getAbsoluteFile()));
-        String subdoc [];
-        reader.readNext(); //leemos la linea de headers sin recogerla.
-        while((subdoc = reader.readNext()) != null){
+        String subdoc[];
+        reader.readNext(); // leemos la linea de headers sin recogerla.
+        while ((subdoc = reader.readNext()) != null) {
             // new FileReader(fichero)
             Document doc = new Document();
 
@@ -106,14 +103,21 @@ public class IndiceSimple {
             System.out.println(subdoc[HEADERS.AuthorKeywords]);
 
             // Los autores deberian dividirse
-            doc.add(new StringField("Authors", subdoc[HEADERS.Author], Field.Store.YES));
+            // doc.add(new StringField("Authors", subdoc[HEADERS.Author], Field.Store.YES));
+            final String[] authors = subdoc[HEADERS.Author].split(", ");
+            for (String author : authors) {
+                doc.add(new StringField("Author", author, Field.Store.YES));
+            }
+
             doc.add(new TextField("Title", subdoc[HEADERS.Title], Field.Store.YES));
             doc.add(new IntPoint("Year", Integer.parseInt(subdoc[HEADERS.Year])));
-            doc.add(new StoredField("Year",Integer.parseInt(subdoc[HEADERS.Year])));
+            doc.add(new StoredField("Year", Integer.parseInt(subdoc[HEADERS.Year])));
             doc.add(new TextField("Content", subdoc[HEADERS.Abstract], Field.Store.YES));
             doc.add(new TextField("Keywords", subdoc[HEADERS.AuthorKeywords], Field.Store.YES));
-            doc.add(new IntPoint("PageCount", Integer.parseInt(subdoc[HEADERS.PageCount])));
-            doc.add(new StoredField("PageCount",Integer.parseInt(subdoc[HEADERS.PageCount])));
+            // doc.add(new IntPoint("PageCount",
+            // Integer.parseInt(subdoc[HEADERS.PageCount])));
+            // doc.add(new
+            // StoredField("PageCount",Integer.parseInt(subdoc[HEADERS.PageCount])));
             // Integer start = ?;
             // Integer end = ?;
 
@@ -130,8 +134,6 @@ public class IndiceSimple {
             // doc.add(new TextField("Body", cuerpo, Field.Store.YES));
 
             writer.addDocument(doc);
-            
-
 
         }
     }
