@@ -109,11 +109,15 @@ public class IndiceSimple {
                 doc.add(new StringField("Author", author, Field.Store.YES));
             }
 
+            final String[] keywords = subdoc[HEADERS.AuthorKeywords].split("; ");
+            for (String keyword : keywords) {
+                doc.add(new TextField("Keyword", keyword, Field.Store.YES));
+            }
+
             doc.add(new TextField("Title", subdoc[HEADERS.Title], Field.Store.YES));
             doc.add(new IntPoint("Year", Integer.parseInt(subdoc[HEADERS.Year])));
             doc.add(new StoredField("Year", Integer.parseInt(subdoc[HEADERS.Year])));
             doc.add(new TextField("Content", subdoc[HEADERS.Abstract], Field.Store.YES));
-            doc.add(new TextField("Keywords", subdoc[HEADERS.AuthorKeywords], Field.Store.YES));
             // doc.add(new IntPoint("PageCount",
             // Integer.parseInt(subdoc[HEADERS.PageCount])));
             // doc.add(new
