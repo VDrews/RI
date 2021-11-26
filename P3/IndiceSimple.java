@@ -46,7 +46,7 @@ public class IndiceSimple {
         IndiceSimple baseline = new IndiceSimple();
 
         baseline.configurarIndice(analyzer, similarity);
-
+ 
         File[] files;
         File directory = new File(args[0]);
         files = directory.listFiles(new FileFilter() {
@@ -59,6 +59,7 @@ public class IndiceSimple {
         for (File file : files) {
             baseline.indexarDocumentos(file);
         }
+        
 
         baseline.close();
     }
@@ -112,7 +113,7 @@ public class IndiceSimple {
             doc.add(new TextField("Title", subdoc[HEADERS.Title], Field.Store.YES));
             doc.add(new IntPoint("Year", Integer.parseInt(subdoc[HEADERS.Year])));
             doc.add(new StoredField("Year", Integer.parseInt(subdoc[HEADERS.Year])));
-            doc.add(new TextField("Content", subdoc[HEADERS.Abstract], Field.Store.YES));
+            doc.add(new TextField("Abstract", subdoc[HEADERS.Abstract], Field.Store.YES));
             doc.add(new TextField("Keywords", subdoc[HEADERS.AuthorKeywords], Field.Store.YES));
             // doc.add(new IntPoint("PageCount",
             // Integer.parseInt(subdoc[HEADERS.PageCount])));
