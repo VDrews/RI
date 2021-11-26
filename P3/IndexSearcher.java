@@ -1,7 +1,9 @@
 package P3;
 
  import java.io.IOException;
- import org.apache.lucene.analysis.Analyzer;
+import java.nio.file.Paths;
+
+import org.apache.lucene.analysis.Analyzer;
  import org.apache.lucene.analysis.standard.StandardAnalyzer;
  import org.apache.lucene.document.*;
 
@@ -10,7 +12,9 @@ package P3;
  import org.apache.lucene.search.Query;
  
  import org.apache.lucene.search.similarities.*;
- import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 
 
 public class Busqueda{
@@ -29,6 +33,7 @@ public class Busqueda{
     public void indexSearch(Analyzer analyzer, Similarity similarity){
         IndexReader  reader = null;
         try{
+            reader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
 
         }catch(IOException.e){
             
