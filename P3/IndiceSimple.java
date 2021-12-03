@@ -43,12 +43,12 @@ public class IndiceSimple {
 
     public static void main(String[] args) throws IOException, CsvException {
 
-        Analyzer analyzer = new StandardAnalyzer();
+        StandardAnalyzer analyzer = new StandardAnalyzer();
         Similarity similarity = new ClassicSimilarity();
         IndiceSimple baseline = new IndiceSimple();
 
         baseline.configurarIndice(analyzer, similarity);
- 
+
         File[] files;
         File directory = new File(args[0]);
         files = directory.listFiles(new FileFilter() {
@@ -61,7 +61,6 @@ public class IndiceSimple {
         for (File file : files) {
             baseline.indexarDocumentos(file);
         }
-        
 
         baseline.close();
     }
@@ -108,30 +107,32 @@ public class IndiceSimple {
             // Los autores deberian dividirse
             // doc.add(new StringField("Authors", subdoc[HEADERS.Author], Field.Store.YES));
             final String[] authors = subdoc[HEADERS.Author].split(", ");
-            String[] authors_complete = new String [authors.length]; 
-            System.arraycopy(authors, 0, authors_complete, 0, authors.length); // copiamos los nombres completos de los autores. vana  ser indexados a parte
+            String[] authors_complete = new String[authors.length];
+            System.arraycopy(authors, 0, authors_complete, 0, authors.length); // copiamos los nombres completos de los
+                                                                               // autores. vana ser indexados a parte
 
             List<String> autores = Arrays.asList(authors);
-            ArrayList<String> author_Ngram =  new ArrayList();
+            ArrayList<String> author_Ngram = new ArrayList();
 
-            for(int i = 0; i< autores.size(); ++i ){
+            for (int i = 0; i < autores.size(); ++i) {
                 DocumentAnalyzer analyzer = new DocumentAnalyzer(autores.get(i));
                 List<String> text = analyzer.applyDifferentFilter(6); // aplicamos //EdgeNGramFilter
-                for(String str :text){
+                for (String str : text) {
                     author_Ngram.add(str);
                 }
-                //author_Ngram.add(authors[i]); YA NO ES NECESARIO PQ LO HAGO EN OTRO CAMPO DIFERENTE EN LA LINEA 131
+                // author_Ngram.add(authors[i]); YA NO ES NECESARIO PQ LO HAGO EN OTRO CAMPO
+                // DIFERENTE EN LA LINEA 131
             }
-            
+
             for (String author : author_Ngram) {
-                if(author.length()>4)
+                if (author.length() > 4)
                     doc.add(new StringField("Author_Ngram", author, Field.Store.YES));
             }
 
             for (String author : authors_complete) {
                 doc.add(new StringField("Author", author, Field.Store.YES));
             }
-            
+
             final String[] keywords = subdoc[HEADERS.AuthorKeywords].split("; ");
             for (String keyword : keywords) {
                 doc.add(new TextField("Keyword", keyword, Field.Store.YES));
@@ -143,7 +144,6 @@ public class IndiceSimple {
             doc.add(new TextField("Abstract", subdoc[HEADERS.Abstract], Field.Store.YES));
             doc.add(new TextField("Keywords", subdoc[HEADERS.AuthorKeywords], Field.Store.YES));
 
-        
             writer.addDocument(doc);
 
         }

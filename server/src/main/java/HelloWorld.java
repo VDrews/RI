@@ -43,7 +43,9 @@ public class HelloWorld {
         ArrayList<Doc> docs = new ArrayList<Doc>();
         for (ScoreDoc hit : hits) {
             Document doc = searcher.doc(hit.doc);
-            docs.add(new Doc(doc.get("Title"), doc.get("Content"), doc.get("Year")));
+            System.out.println(doc.get("Author"));
+            docs.add(new Doc(doc.get("Title"), doc.get("Content"), doc.get("Year"), doc.getValues("Author"),
+                    doc.getValues("Keyword")));
         }
         return gson.toJson(docs, new TypeToken<ArrayList<Doc>>() {
         }.getType());
@@ -61,7 +63,20 @@ public class HelloWorld {
 
         app.get("/{text}", ctx -> {
             Query q1;
-            q1 = parser.parse("Content:" + ctx.pathParam("text"));
+            String titleParam = ctx.queryParam("title");
+            String authorParam = ctx.queryParam("author");
+            String keywordParam = ctx.queryParam("keyword");
+
+            String queryAppend = "Content:" + ctx.pathParam("text");
+            if (titleParam != null) {
+                queryAppend += " AND Title:" + titleParam;
+            }
+            if (authorParam != null) {
+                queryAppend += " AND Author:" + authorParam;
+            }
+
+            System.out.println(queryAppend);
+            q1 = parser.parse(queryAppend);
             TopDocs topdocs = searcher.search(q1, 20);
             ScoreDoc[] hits = topdocs.scoreDocs;
 
