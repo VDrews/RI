@@ -99,6 +99,8 @@ public class DocumentAnalyzer {
     this.enlaces = linkContentHandler.getLinks();
   }
 
+  
+
   private List<Entry<String, Integer>> hashMapToSortedArray(Map<String, Integer> map) {
     Set<Entry<String, Integer>> entries = map.entrySet();
     Comparator<Entry<String, Integer>> valueComparator = new Comparator<Entry<String, Integer>>() {

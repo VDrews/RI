@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.mchange.net.SocketUtils;
 import com.opencsv.CSVReader;
@@ -106,10 +108,30 @@ public class IndiceSimple {
             // Los autores deberian dividirse
             // doc.add(new StringField("Authors", subdoc[HEADERS.Author], Field.Store.YES));
             final String[] authors = subdoc[HEADERS.Author].split(", ");
-            for (String author : authors) {
-                doc.add(new StringField("Author", author, Field.Store.YES));
+            String[] authors_complete = new String [authors.length]; 
+            System.arraycopy(authors, 0, authors_complete, 0, authors.length); // copiamos los nombres completos de los autores. vana  ser indexados a parte
+
+            List<String> autores = Arrays.asList(authors);
+            ArrayList<String> author_Ngram =  new ArrayList();
+
+            for(int i = 0; i< autores.size(); ++i ){
+                DocumentAnalyzer analyzer = new DocumentAnalyzer(autores.get(i));
+                List<String> text = analyzer.applyDifferentFilter(6); // aplicamos //EdgeNGramFilter
+                for(String str :text){
+                    author_Ngram.add(str);
+                }
+                //author_Ngram.add(authors[i]); YA NO ES NECESARIO PQ LO HAGO EN OTRO CAMPO DIFERENTE EN LA LINEA 131
+            }
+            
+            for (String author : author_Ngram) {
+                if(author.length()>4)
+                    doc.add(new StringField("Author_Ngram", author, Field.Store.YES));
             }
 
+            for (String author : authors_complete) {
+                doc.add(new StringField("Author", author, Field.Store.YES));
+            }
+            
             final String[] keywords = subdoc[HEADERS.AuthorKeywords].split("; ");
             for (String keyword : keywords) {
                 doc.add(new TextField("Keyword", keyword, Field.Store.YES));
@@ -120,25 +142,8 @@ public class IndiceSimple {
             doc.add(new StoredField("Year", Integer.parseInt(subdoc[HEADERS.Year])));
             doc.add(new TextField("Abstract", subdoc[HEADERS.Abstract], Field.Store.YES));
             doc.add(new TextField("Keywords", subdoc[HEADERS.AuthorKeywords], Field.Store.YES));
-            // doc.add(new IntPoint("PageCount",)
-            // Integer.parseInt(subdoc[HEADERS.PageCount])));
-            // doc.add(new
-            // StoredField("PageCount",Integer.parseInt(subdoc[HEADERS.PageCount])));
-            // Integer start = ?;
-            // Integer end = ?;
 
-            // String aux = cadena.substring(start, end);
-
-            // doc.add(new IntPoint("ID", valor));
-            // doc.add(new StoredField("ID", valor));
-
-            // start = ...;
-            // end = ...;
-
-            // String cuerpo = cadena.substring(start, end);
-
-            // doc.add(new TextField("Body", cuerpo, Field.Store.YES));
-
+        
             writer.addDocument(doc);
 
         }

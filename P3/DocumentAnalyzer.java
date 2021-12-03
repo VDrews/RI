@@ -99,6 +99,16 @@ public class DocumentAnalyzer {
     this.enlaces = linkContentHandler.getLinks();
   }
 
+  // Constructor qu recibe un String. Constructor implementado para realizar N-gramFilter sobre los autores de la práctica final
+  // Solo nos interesa el campo contenido.
+  DocumentAnalyzer(String str){
+    this.nombre = "Este objeto no representa ningun archivo, solo un String";
+    this.metadata = null;
+    this.contenido = str;
+    this.language = null;
+    this.enlaces = null;
+  }
+
   private List<Entry<String, Integer>> hashMapToSortedArray(Map<String, Integer> map) {
     Set<Entry<String, Integer>> entries = map.entrySet();
     Comparator<Entry<String, Integer>> valueComparator = new Comparator<Entry<String, Integer>>() {
@@ -367,7 +377,7 @@ public class DocumentAnalyzer {
             Tokenizer source = new UAX29URLEmailTokenizer();
     
             // Filtramos con EdgeNGramFilter
-            int gramSize = 2; // tamaño del grano para la generación de bigramas
+            int gramSize = 5; // tamaño del grano para la generación de bigramas
             TokenStream edge_filter = new EdgeNGramTokenFilter(source, gramSize, gramSize+1); // estamos en version 7.1 
           
             return new TokenStreamComponents(source, edge_filter);
@@ -390,7 +400,7 @@ public class DocumentAnalyzer {
             Tokenizer source = new UAX29URLEmailTokenizer();
     
             // Filtramos con NGramTokenFilter
-            int gramSize = 2; // tamaño del grano para la generación de bigramas
+            int gramSize = 5; // tamaño del grano para la generación de bigramas
             TokenStream nGramToken_filter = new NGramTokenFilter(source, gramSize, gramSize+1);
     
             return new TokenStreamComponents(source, nGramToken_filter);
