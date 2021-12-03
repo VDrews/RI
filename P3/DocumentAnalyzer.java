@@ -38,10 +38,10 @@ import org.apache.tika.language.detect.LanguageDetector;
 
 import org.apache.lucene.analysis.core.*;
 import org.apache.lucene.analysis.es.SpanishAnalyzer;
-import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.snowball.SnowballFilter;
 import org.apache.lucene.analysis.shingle.ShingleFilter;
 import org.apache.lucene.analysis.ngram.EdgeNGramTokenFilter;
+import org.apache.lucene.analysis.ngram.EdgeNGramTokenizer;
 import org.apache.lucene.analysis.ngram.NGramTokenFilter;
 import org.apache.lucene.analysis.commongrams.CommonGramsFilter;
 import org.apache.lucene.analysis.synonym.SynonymFilter;
@@ -250,7 +250,7 @@ public class DocumentAnalyzer {
 
   //Método que aplica un tokenizador estandar o custom y que aplica los diferentes filtros.  
   //Generando las diferentes salidas con ayuda de la clase OutputHelper.
-
+/*
   public List<String> applyDifferentFilter(int i) throws IOException{
     Analyzer analyzer;
     String filterName = new String();
@@ -377,10 +377,10 @@ public class DocumentAnalyzer {
             Tokenizer source = new UAX29URLEmailTokenizer();
     
             // Filtramos con EdgeNGramFilter
-            int gramSize = 5; // tamaño del grano para la generación de bigramas
-            TokenStream edge_filter = new EdgeNGramTokenFilter(source, gramSize, gramSize+1); // estamos en version 7.1 
-          
-            return new TokenStreamComponents(source, edge_filter);
+
+            EdgeNGramTokenizer ngramTokenizer = new EdgeNGramTokenizer(4,6);
+
+            return new TokenStreamComponents(ngramTokenizer, ngramTokenizer);
           } catch (Exception e) {
             e.printStackTrace();
           }
@@ -479,6 +479,29 @@ public class DocumentAnalyzer {
 
     return text;
   }
+  
+
+  public List<String> aplicaNgram()throws IOException{
+    Analyzer analyzer = new Analyzer() {
+      @Override
+      protected TokenStreamComponents createComponents(String fieldName) {
+        try {  
+          // Tokenizamos con ngram.
+
+          EdgeNGramTokenizer ngramTokenizer = new EdgeNGramTokenizer(4,6); // 4-> valor minimo de ngram; 6 -> valor máximo
+
+          return new TokenStreamComponents(ngramTokenizer);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        return null;
+      }
+      };
+    TokenStream stream = analyzer.tokenStream(null, new StringReader(contenido));
+
+
+  }
+  */
 
   public List<String> last4CaractersFilter() throws IOException{
     Analyzer analyzer;

@@ -38,7 +38,7 @@ import org.apache.tika.language.detect.LanguageDetector;
 
 import org.apache.lucene.analysis.core.*;
 import org.apache.lucene.analysis.es.SpanishAnalyzer;
-import org.apache.lucene.analysis.standard.StandardFilter;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.snowball.SnowballFilter;
 import org.apache.lucene.analysis.shingle.ShingleFilter;
 import org.apache.lucene.analysis.ngram.EdgeNGramTokenFilter;

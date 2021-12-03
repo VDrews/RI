@@ -50,8 +50,8 @@ public class IndiceSimple {
         Similarity similarity = new ClassicSimilarity();
         IndiceSimple baseline = new IndiceSimple();
         IndiceSimple facet_index = new IndiceSimple();
-        FacetsConfig fconfig = facet_index.configurarIndice(analyzer);
         baseline.configurarIndice(analyzer, similarity);
+        FacetsConfig fconfig = facet_index.configurarIndice();
  
         File[] files;
         File directory = new File(args[0]);
@@ -81,16 +81,13 @@ public class IndiceSimple {
         writer = new IndexWriter(dir, iwc);
     }
         // Método para configurar el indice de las facetas
-    public FacetsConfig configurarIndice(Analyzer analyzer) throws IOException {
-        IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
-        iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+    public FacetsConfig configurarIndice() throws IOException {
         FacetsConfig fconfig = new FacetsConfig();
+        Directory dir = FSDirectory.open(Paths.get("./P3/facets"));
+        
+        facet_writer= new DirectoryTaxonomyWriter(dir);
         fconfig.setMultiValued("Author", true);
         fconfig.setMultiValued("Year", true);
-
-        Directory dir = FSDirectory.open(Paths.get("./P3/facets"));
-
-         facet_writer= new DirectoryTaxonomyWriter(dir);
          return fconfig;
     }
 
@@ -117,28 +114,14 @@ public class IndiceSimple {
             Document doc = new Document();
 
             final String[] authors = subdoc[HEADERS.Author].split(", ");
-            String[] authors_complete = new String [authors.length]; 
-            System.arraycopy(authors, 0, authors_complete, 0, authors.length); // copiamos los nombres completos de los autores. vana  ser indexados a parte
 
             List<String> autores = Arrays.asList(authors);
             ArrayList<String> author_Ngram =  new ArrayList();
 
             // INCLUIMOS LOS CAMPOS DE INDEXACION
-            for(int i = 0; i< autores.size(); ++i ){
-                DocumentAnalyzer analyzer = new DocumentAnalyzer(autores.get(i));
-                List<String> text = analyzer.applyDifferentFilter(6); // aplicamos //EdgeNGramFilter
-                for(String str :text){
-                    author_Ngram.add(str);
-                }
-                //author_Ngram.add(authors[i]); YA NO ES NECESARIO PQ LO HAGO EN OTRO CAMPO DIFERENTE EN LA LINEA 131
-            }
-            
-            for (String author : author_Ngram) {
-                if(author.length()>4)
-                    doc.add(new StringField("Author_Ngrams", author, Field.Store.YES));
-            }
 
-            for (String author : authors_complete) {
+
+            for (String author : authors) {
                 doc.add(new StringField("Author", author, Field.Store.YES));
             }
             
@@ -153,7 +136,7 @@ public class IndiceSimple {
 
             final String[] keywords = subdoc[HEADERS.AuthorKeywords].split("; ");
             for (String keyword : keywords) {
-                doc.add(new FacetField("Keyword", keyword));
+                doc.add(new FacetField("Author_Keyword", keyword));
             }
 
             doc.add(new FacetField("Year",subdoc[HEADERS.Year]));
