@@ -74,7 +74,7 @@ public class HelloWorld {
             Document doc = searcher.doc(hit.doc);
             System.out.println(doc.get("Author"));
             docs.add(new Doc(doc.get("Title"), doc.get("Content"), doc.get("Year"), doc.getValues("Author"),
-                    doc.getValues("Keyword")));
+                    doc.getValues("Keyword"), doc.get("EID")));
         }
 
         String docsJSON = gson.toJson(docs, new TypeToken<ArrayList<Doc>>() {
@@ -135,7 +135,6 @@ public class HelloWorld {
             ScoreDoc[] hits = topdocs.scoreDocs;
 
             Facets facetas = new FastTaxonomyFacetCounts(taxoReader, fconfig, fc);
-            q1 = new MatchAllDocsQuery();
             DrillDownQuery dq = new DrillDownQuery(fconfig, q1);
             if (keywordParam != null || yearParam != null) {
                 if (keywordParam != null) {

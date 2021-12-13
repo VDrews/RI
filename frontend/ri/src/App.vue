@@ -24,8 +24,6 @@
           dense
           clearable
           clear-icon="mdi-close"
-          @blur="searchTerm"
-          @keydown.enter="searchTerm"
           label="Titulo"
         ></v-text-field>
         <span>Autor</span>
@@ -38,8 +36,6 @@
           label="Autor"
           clearable
           clear-icon="mdi-close"
-          @keydown.enter="searchTerm"
-          @blur="searchTerm"
         ></v-text-field>
         <v-layout justify-space-between align-center>
           <v-subheader class="pl-0">Año de publicación</v-subheader>
@@ -95,38 +91,46 @@
         </v-radio>
       </v-radio-group>
     </v-navigation-drawer>
-    <v-content>
-      <div
-        v-if="docs.length > 0"
-        class="mt-4 ml-4 green--text font-weight-bold"
-      >
-        Mostrando {{ docs.length }} Resultados
+    <v-main>
+      <div v-if="docs.length > 0">
+        <div
+          v-if="docs.length > 0"
+          class="mt-4 ml-4 green--text font-weight-bold"
+        >
+          Mostrando {{ docs.length }} Resultados
+        </div>
+        <v-card
+          v-for="(doc, i) in docs"
+          :key="i"
+          class="pa-4 ma-4 rounded-lg"
+          outlined
+          @click="openDoc(doc)"
+        >
+          <h3>{{ doc.title }}</h3>
+          <a
+            class="mr-1"
+            v-for="(author, j) in doc.authors"
+            :key="j"
+            @click.stop="selectAuthor(author)"
+            >{{ author }}</a
+          >
+          <p>{{ doc.content.substr(0, 255) }}...</p>
+          <v-chip
+            class="mr-1 mb-1"
+            v-for="keyword in doc.keywords"
+            :key="keyword"
+            @click.stop="selectKeyword(keyword)"
+            >{{ keyword }}</v-chip
+          >
+          <div class="mt-2">{{ doc.year }}</div>
+        </v-card>
       </div>
-      <v-card
-        v-for="(doc, i) in docs"
-        :key="i"
-        class="pa-4 ma-4 rounded-lg"
-        outlined
-      >
-        <h3>{{ doc.title }}</h3>
-        <a
-          class="mr-1"
-          v-for="(author, j) in doc.authors"
-          :key="j"
-          @click="selectAuthor(author)"
-          >{{ author }}</a
-        >
-        <p>{{ doc.content.substr(0, 255) }}...</p>
-        <v-chip
-          class="mr-1 mb-1"
-          v-for="keyword in doc.keywords"
-          :key="keyword"
-          @click="selectKeyword(keyword)"
-          >{{ keyword }}</v-chip
-        >
-        <div class="mt-2">{{ doc.year }}</div>
-      </v-card>
-    </v-content>
+      <div v-else class="ma-6">
+        <v-alert text color="green" class="font-weight-bold">
+          No se han encontrado resultados
+        </v-alert>
+      </div>
+    </v-main>
   </v-app>
 </template>
 
@@ -134,6 +138,15 @@
 import axios from "axios";
 export default {
   name: "App",
+
+  watch: {
+    titleFilter() {
+      this.searchTerm();
+    },
+    authorFilter() {
+      this.searchTerm();
+    },
+  },
 
   data: () => ({
     searchText: "",
@@ -150,6 +163,11 @@ export default {
   }),
 
   methods: {
+    openDoc(doc) {
+      window.open(
+        `https://www.scopus.com/record/display.uri?eid=${doc.eid}&origin=resultslist`
+      );
+    },
     async searchTerm() {
       console.log(this.filterByYear, this.yearSelected);
       const { data } = await axios.get(
