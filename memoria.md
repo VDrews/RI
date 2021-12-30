@@ -6,7 +6,7 @@ En este caso hemos decidido hacer un sistema de recuperación web utilizando la 
 
 La arquitectura de nuestro sistema estará compuesto de estos 3 módulos:
 
-* Indexador encargado de mantener actualizado el indice de lucene a partir de los documentos que se vayan aportando
+* Indexador encargado de mantener actualizado el indice de lucene a partir de los documentos que vayan entrando en la carpeta /Datasets. El indexador tambien se encarga de construir el indice para las facetas.
 * Backend REST encargado de leer el indice de lucene y responder a las consultas de búsquedas
 * Frontend web que ofrecerá una interfaz sencilla donde poder realizar las consultas, las cuales se enviarán al backend donde se devolverá el resultado y se mostrará en pantalla
 
@@ -22,7 +22,7 @@ El indice está compuesto por dos carpetas:
   * Author
   * EID: Aunque no se use para indexar, lo almacenaremos para poder ir a la página del documento de Scopus
 * facets: Donde se indexan las facetas
-  * Año 
+  * Año
   * Keywords
 
 
