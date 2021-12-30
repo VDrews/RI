@@ -24,8 +24,7 @@ El indice está compuesto por dos carpetas:
 * facets: Donde se indexan las facetas
   * Año
   * Keywords
-
-
+Todo esto seconsigue hacer dentro del método IndexarDocumentos de la clase IndiceSimple.
 
 ## Backend
 Para el backend hemos usado la libería javalin, que nos permitirá tener un servidor REST con java de una forma sencilla de implementar.
@@ -35,8 +34,6 @@ El servidor solamente escuchará una sola petición <GET>:
 http://localhost:7030/<consultaAbstract>?title=<consultaTitle>&author=<consultaAutor>&year=<consultaYear>&keyword=<consultaKeyword>
 
 De esta forma, con una única petición podemos enviar todos los parámetros de búsqueda que queremos realizar.
-
-
 
 ## Frontend
 Para el frontend hemos utilizado la libreria de frontend Vue.js con la herramienta de diseño Vuetify para poder hacer de una forma rápida y visualmente atractiva una interfaz encargada de poder introducir comodamente los parámetros de búsqueda y poder visualizar los resultados, y así poder mostrar que nuestro motor de búsqueda puede aplicarse a un entorno web real.
